@@ -55,10 +55,10 @@ jobs:
             src-tauri/target
           key: ${{ runner.os }}-cargo-release-${{ hashFiles('src-tauri/Cargo.lock') }}
       - run: npm ci
-      - name: Build Frontend
-        run: npm run build:frontend
+      - name: Install Rust target
+        run: rustup target add x86_64-pc-windows-msvc
       - name: Build Tauri (Windows)
-        run: npx tauri build --target x86_64-pc-windows-msvc
+        run: npm run tauri:build -- --target x86_64-pc-windows-msvc --verbose
       - name: Upload Windows Installer
         run: |
           gh release upload "${{ needs.create-release.outputs.tag }}" \
@@ -93,10 +93,10 @@ jobs:
             src-tauri/target
           key: ${{ runner.os }}-${{ matrix.target }}-cargo-release-${{ hashFiles('src-tauri/Cargo.lock') }}
       - run: npm ci
-      - name: Build Frontend
-        run: npm run build:frontend
+      - name: Install Rust target
+        run: rustup target add ${{ matrix.target }}
       - name: Build Tauri (macOS)
-        run: npx tauri build --target ${{ matrix.target }}
+        run: npm run tauri:build -- --target ${{ matrix.target }} --verbose
       - name: Upload macOS DMG
         run: |
           gh release upload "${{ needs.create-release.outputs.tag }}" \
@@ -134,10 +134,10 @@ jobs:
             src-tauri/target
           key: ${{ runner.os }}-${{ matrix.target }}-cargo-release-${{ hashFiles('src-tauri/Cargo.lock') }}
       - run: npm ci
-      - name: Build Frontend
-        run: npm run build:frontend
+      - name: Install Rust target
+        run: rustup target add ${{ matrix.target }}
       - name: Build Tauri (Linux)
-        run: npx tauri build --target ${{ matrix.target }}
+        run: npm run tauri:build -- --target ${{ matrix.target }} --verbose
       - name: Upload Linux Artifacts
         run: |
           gh release upload "${{ needs.create-release.outputs.tag }}" \

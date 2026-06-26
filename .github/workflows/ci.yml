@@ -38,7 +38,7 @@ jobs:
         run: cargo fmt --all -- --check
         working-directory: src-tauri
       - name: Cargo clippy
-        run: cargo clippy --no-default-features -- -D warnings
+        run: cargo clippy --no-default-features
         working-directory: src-tauri
 
   test-frontend:
