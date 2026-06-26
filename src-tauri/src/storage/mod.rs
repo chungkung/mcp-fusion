@@ -6,9 +6,7 @@ pub mod sqlite;
 // 定义所有持久化操作的统一接口，解耦业务逻辑与具体数据库实现。
 // 当前仅实现 SQLite，未来可新增 PostgreSQL 等实现。
 
-use sqlite::{
-    AuditLog, AuthToken, McpServer, PaginatedResult, Workflow, WorkflowExecution,
-};
+use sqlite::{AuditLog, AuthToken, McpServer, PaginatedResult, Workflow, WorkflowExecution};
 
 /// 数据库抽象接口，封装所有 CRUD 操作。
 /// 调用方不直接依赖 SQLite，可通过此 trait 切换后端。

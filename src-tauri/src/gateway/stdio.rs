@@ -102,7 +102,10 @@ impl StdioClient {
                     line.clear();
                     match reader.read_line(&mut line).await {
                         Ok(0) => break, // EOF
-                        Ok(_) => tracing::warn!("[MCP stderr] {}", crate::crypto::sanitize_log(line.trim())),
+                        Ok(_) => tracing::warn!(
+                            "[MCP stderr] {}",
+                            crate::crypto::sanitize_log(line.trim())
+                        ),
                         Err(_) => break,
                     }
                 }
@@ -117,7 +120,10 @@ impl StdioClient {
             initialized: false,
         };
 
-        client.initialize().await.map_err(|e| format!("stdio 初始化失败: {e}"))?;
+        client
+            .initialize()
+            .await
+            .map_err(|e| format!("stdio 初始化失败: {e}"))?;
 
         Ok(client)
     }

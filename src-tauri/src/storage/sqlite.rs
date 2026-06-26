@@ -103,9 +103,9 @@ pub struct Workflow {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AuditLog {
     pub id: String,
-    pub action: String,       // "workflow.execute" | "server.add" | "auth.generate" | ...
-    pub resource: String,     // "workflow:xxx" | "server:xxx" | "auth" | ...
-    pub detail: String,       // JSON 格式的额外信息
+    pub action: String, // "workflow.execute" | "server.add" | "auth.generate" | ...
+    pub resource: String, // "workflow:xxx" | "server:xxx" | "auth" | ...
+    pub detail: String, // JSON 格式的额外信息
     /// 哈希链：上一条日志的 SHA-256 哈希值，构成防篡改链
     #[serde(default)]
     #[serde(rename = "prevHash")]
@@ -127,7 +127,7 @@ pub struct WorkflowExecution {
     pub id: String,
     #[serde(rename = "workflowId")]
     pub workflow_id: String,
-    pub status: String,       // "running" | "success" | "failed" | "timeout" | "aborted"
+    pub status: String, // "running" | "success" | "failed" | "timeout" | "aborted"
     /// 幂等键：相同 workflow_id + idempotency_key 只执行一次
     #[serde(default)]
     #[serde(rename = "idempotencyKey")]
@@ -154,8 +154,8 @@ pub struct AuthToken {
     pub id: String,
     #[serde(rename = "keyHash")]
     pub key_hash: String,
-    pub label: String,        // "default" | "admin" | ...
-    pub role: String,         // "admin" | "developer" | "viewer"
+    pub label: String, // "default" | "admin" | ...
+    pub role: String,  // "admin" | "developer" | "viewer"
     #[serde(rename = "createdAt")]
     pub created_at: i64,
 }

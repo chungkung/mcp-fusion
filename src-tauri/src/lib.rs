@@ -34,8 +34,7 @@ pub fn init_logging() -> Vec<WorkerGuard> {
     let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
 
     // 尝试初始化 OpenTelemetry 追踪（通过环境变量配置）
-    let otel_endpoint =
-        std::env::var("OTEL_EXPORTER_OTLP_ENDPOINT").unwrap_or_default();
+    let otel_endpoint = std::env::var("OTEL_EXPORTER_OTLP_ENDPOINT").unwrap_or_default();
     let otel_service_name =
         std::env::var("OTEL_SERVICE_NAME").unwrap_or_else(|_| "mcp-fusion".to_string());
 
@@ -93,12 +92,11 @@ fn dirs_log_path() -> String {
 use chrono::Utc;
 use storage::sqlite::Database;
 #[cfg(feature = "tauri-runtime")]
-use storage::sqlite::{
-    McpServer, Workflow, WorkflowEdge, WorkflowNode, WorkflowNodeData,
-    WorkflowNodePosition,
-};
-#[cfg(feature = "tauri-runtime")]
 use storage::sqlite::{AuditLog, WorkflowExecution};
+#[cfg(feature = "tauri-runtime")]
+use storage::sqlite::{
+    McpServer, Workflow, WorkflowEdge, WorkflowNode, WorkflowNodeData, WorkflowNodePosition,
+};
 
 #[cfg(feature = "tauri-runtime")]
 use tauri::Manager;
@@ -137,18 +135,40 @@ impl UserRole {
             UserRole::Admin => true,
             UserRole::Developer => matches!(
                 action,
-                "server.list" | "server.get" | "server.add" | "server.update" | "server.remove"
-                    | "server.ping" | "server.list_tools" | "server.execute_tool"
-                    | "workflow.list" | "workflow.get" | "workflow.save" | "workflow.remove"
-                    | "workflow.execute" | "workflow.retry" | "workflow.force_unlock"
-                    | "execution.list" | "runtime.status" | "runtime.stop" | "health"
-                    | "backup" | "restore" | "intent_parse"
+                "server.list"
+                    | "server.get"
+                    | "server.add"
+                    | "server.update"
+                    | "server.remove"
+                    | "server.ping"
+                    | "server.list_tools"
+                    | "server.execute_tool"
+                    | "workflow.list"
+                    | "workflow.get"
+                    | "workflow.save"
+                    | "workflow.remove"
+                    | "workflow.execute"
+                    | "workflow.retry"
+                    | "workflow.force_unlock"
+                    | "execution.list"
+                    | "runtime.status"
+                    | "runtime.stop"
+                    | "health"
+                    | "backup"
+                    | "restore"
+                    | "intent_parse"
             ),
             UserRole::Viewer => matches!(
                 action,
-                "server.list" | "server.get" | "server.ping" | "server.list_tools"
-                    | "workflow.list" | "workflow.get" | "execution.list"
-                    | "runtime.status" | "health"
+                "server.list"
+                    | "server.get"
+                    | "server.ping"
+                    | "server.list_tools"
+                    | "workflow.list"
+                    | "workflow.get"
+                    | "execution.list"
+                    | "runtime.status"
+                    | "health"
             ),
         }
     }
@@ -413,12 +433,15 @@ mod commands {
         limit: usize,
     ) -> Result<storage::sqlite::PaginatedResult<McpServer>, String> {
         state.auth.require_role("server.list")?;
-        state.db.list_servers_paginated(offset, limit).map(|mut result| {
-            for s in &mut result.items {
-                decrypt_server_fields(s, &state.encrypt_passphrase);
-            }
-            result
-        })
+        state
+            .db
+            .list_servers_paginated(offset, limit)
+            .map(|mut result| {
+                for s in &mut result.items {
+                    decrypt_server_fields(s, &state.encrypt_passphrase);
+                }
+                result
+            })
     }
 
     #[tauri::command]
@@ -625,8 +648,7 @@ mod commands {
                 workflow_id: existing.workflow_id,
                 execution_id: existing.id,
                 status: existing.status,
-                node_results: serde_json::from_value(existing.node_results)
-                    .unwrap_or_default(),
+                node_results: serde_json::from_value(existing.node_results).unwrap_or_default(),
                 error: existing.error,
             });
         }
@@ -652,8 +674,8 @@ mod commands {
             match state.db.get_execution(prev_exec_id) {
                 Ok(Some(prev_exec)) => {
                     if prev_exec.status == "failed" || prev_exec.status == "timeout" {
-                        let nodes: Vec<String> = serde_json::from_value(prev_exec.completed_nodes)
-                            .unwrap_or_default();
+                        let nodes: Vec<String> =
+                            serde_json::from_value(prev_exec.completed_nodes).unwrap_or_default();
                         // 提取已完成节点的输出，供下游节点引用
                         let outputs: HashMap<String, serde_json::Value> = prev_exec
                             .node_results
@@ -742,7 +764,13 @@ mod commands {
         let scheduler = orchestrator::Scheduler::new(config);
 
         let result = scheduler
-            .execute(&state.db, &workflow, window.as_ref(), &completed_node_ids, &completed_outputs)
+            .execute(
+                &state.db,
+                &workflow,
+                window.as_ref(),
+                &completed_node_ids,
+                &completed_outputs,
+            )
             .await;
 
         let node_results: Vec<orchestrator::NodeResult> = result
@@ -851,25 +879,21 @@ mod commands {
             c
         } else {
             let new_client = crate::gateway::create_mcp_client(
-                    &server.protocol,
-                    &server.command,
-                    &server.args,
-                    &server.env,
-                    &server.endpoint,
-                )
-                .await
-                .map_err(|e| {
-                    state.circuit_breaker.record_failure(&server_id);
-                    e
-                })?;
+                &server.protocol,
+                &server.command,
+                &server.args,
+                &server.env,
+                &server.endpoint,
+            )
+            .await
+            .map_err(|e| {
+                state.circuit_breaker.record_failure(&server_id);
+                e
+            })?;
 
-            let client_arc =
-                std::sync::Arc::new(tokio::sync::Mutex::new(new_client));
+            let client_arc = std::sync::Arc::new(tokio::sync::Mutex::new(new_client));
             let mut cache = state.client_cache.lock().await;
-            cache
-                .entry(server_id.clone())
-                .or_insert(client_arc)
-                .clone()
+            cache.entry(server_id.clone()).or_insert(client_arc).clone()
         };
 
         let tools = client.lock().await.list_tools().await.map_err(|e| {
@@ -985,25 +1009,21 @@ mod commands {
             c
         } else {
             let new_client = crate::gateway::create_mcp_client(
-                    &server.protocol,
-                    &server.command,
-                    &server.args,
-                    &server.env,
-                    &server.endpoint,
-                )
-                .await
-                .map_err(|e| {
-                    state.circuit_breaker.record_failure(&server_id);
-                    e
-                })?;
+                &server.protocol,
+                &server.command,
+                &server.args,
+                &server.env,
+                &server.endpoint,
+            )
+            .await
+            .map_err(|e| {
+                state.circuit_breaker.record_failure(&server_id);
+                e
+            })?;
 
-            let client_arc =
-                std::sync::Arc::new(tokio::sync::Mutex::new(new_client));
+            let client_arc = std::sync::Arc::new(tokio::sync::Mutex::new(new_client));
             let mut cache = state.client_cache.lock().await;
-            cache
-                .entry(server_id.clone())
-                .or_insert(client_arc)
-                .clone()
+            cache.entry(server_id.clone()).or_insert(client_arc).clone()
         };
 
         let result = client
@@ -1102,7 +1122,8 @@ mod commands {
             session.current_workflow = Some(parsed);
         }
 
-        let parsed = llm::refine_workflow_with_llm(&session, &refinement_text, &available_tools).await?;
+        let parsed =
+            llm::refine_workflow_with_llm(&session, &refinement_text, &available_tools).await?;
 
         convert_parsed_to_workflow(parsed, workflow_id, now)
             .map_err(|e| format!("工作流细化失败: {e}"))
@@ -1140,14 +1161,46 @@ mod commands {
         // 如果没有配置服务器，返回通用工具模板
         if tools.is_empty() {
             tools = vec![
-                llm::ToolInfo { server_id: "mcp-http".to_string(), name: "http_request".to_string(), description: "发送 HTTP 请求（GET/POST/PUT/DELETE）".to_string() },
-                llm::ToolInfo { server_id: "mcp-fs".to_string(), name: "file_reader".to_string(), description: "读取文件内容".to_string() },
-                llm::ToolInfo { server_id: "mcp-fs".to_string(), name: "file_writer".to_string(), description: "写入内容到文件".to_string() },
-                llm::ToolInfo { server_id: "mcp-data".to_string(), name: "json_transform".to_string(), description: "JSON 数据转换与映射".to_string() },
-                llm::ToolInfo { server_id: "mcp-data".to_string(), name: "csv_parser".to_string(), description: "解析 CSV 数据".to_string() },
-                llm::ToolInfo { server_id: "mcp-ai".to_string(), name: "text_ai".to_string(), description: "AI 文本生成与处理".to_string() },
-                llm::ToolInfo { server_id: "mcp-notify".to_string(), name: "webhook_send".to_string(), description: "发送 Webhook 通知".to_string() },
-                llm::ToolInfo { server_id: "mcp-db".to_string(), name: "db_query".to_string(), description: "执行数据库查询".to_string() },
+                llm::ToolInfo {
+                    server_id: "mcp-http".to_string(),
+                    name: "http_request".to_string(),
+                    description: "发送 HTTP 请求（GET/POST/PUT/DELETE）".to_string(),
+                },
+                llm::ToolInfo {
+                    server_id: "mcp-fs".to_string(),
+                    name: "file_reader".to_string(),
+                    description: "读取文件内容".to_string(),
+                },
+                llm::ToolInfo {
+                    server_id: "mcp-fs".to_string(),
+                    name: "file_writer".to_string(),
+                    description: "写入内容到文件".to_string(),
+                },
+                llm::ToolInfo {
+                    server_id: "mcp-data".to_string(),
+                    name: "json_transform".to_string(),
+                    description: "JSON 数据转换与映射".to_string(),
+                },
+                llm::ToolInfo {
+                    server_id: "mcp-data".to_string(),
+                    name: "csv_parser".to_string(),
+                    description: "解析 CSV 数据".to_string(),
+                },
+                llm::ToolInfo {
+                    server_id: "mcp-ai".to_string(),
+                    name: "text_ai".to_string(),
+                    description: "AI 文本生成与处理".to_string(),
+                },
+                llm::ToolInfo {
+                    server_id: "mcp-notify".to_string(),
+                    name: "webhook_send".to_string(),
+                    description: "发送 Webhook 通知".to_string(),
+                },
+                llm::ToolInfo {
+                    server_id: "mcp-db".to_string(),
+                    name: "db_query".to_string(),
+                    description: "执行数据库查询".to_string(),
+                },
             ];
         }
 
@@ -1224,11 +1277,7 @@ mod commands {
     }
 
     /// 关键词匹配的意图解析（LLM 不可用时的回退方案）
-    fn intent_parse_keyword(
-        text: &str,
-        workflow_id: String,
-        now: i64,
-    ) -> Result<Workflow, String> {
+    fn intent_parse_keyword(text: &str, workflow_id: String, now: i64) -> Result<Workflow, String> {
         let text_lower = text.to_lowercase();
 
         // 检测关键词
@@ -1404,7 +1453,10 @@ mod commands {
 
         Ok(Workflow {
             id: workflow_id,
-            name: format!("Intent: {}", text.chars().take(40).collect::<String>().trim()),
+            name: format!(
+                "Intent: {}",
+                text.chars().take(40).collect::<String>().trim()
+            ),
             description: text.to_string(),
             mode: "intent".to_string(),
             status: "idle".to_string(),
@@ -1452,7 +1504,10 @@ mod commands {
         let config = marketplace::RegistryConfig::from_env();
         let registry = marketplace::TemplateRegistry::new(config);
 
-        match registry.list_templates(category.as_deref(), search.as_deref()).await {
+        match registry
+            .list_templates(category.as_deref(), search.as_deref())
+            .await
+        {
             Ok(templates) => Ok(templates),
             Err(e) => {
                 tracing::warn!("远程模板仓库不可用: {e}，回退到内置模板");
@@ -1468,7 +1523,9 @@ mod commands {
                         templates.retain(|t| {
                             t.name.to_lowercase().contains(&q_lower)
                                 || t.description.to_lowercase().contains(&q_lower)
-                                || t.tags.iter().any(|tag| tag.to_lowercase().contains(&q_lower))
+                                || t.tags
+                                    .iter()
+                                    .any(|tag| tag.to_lowercase().contains(&q_lower))
                         });
                     }
                 }
@@ -1645,13 +1702,14 @@ mod commands {
         let dst_path = backup_dir.join(&dst);
         // 规范化后检查是否仍在 backup_dir 内
         let canonical_dst = dst_path.canonicalize().unwrap_or_else(|_| dst_path.clone());
-        let canonical_dir = backup_dir.canonicalize().unwrap_or_else(|_| backup_dir.clone());
+        let canonical_dir = backup_dir
+            .canonicalize()
+            .unwrap_or_else(|_| backup_dir.clone());
         if !canonical_dst.starts_with(&canonical_dir) {
             return Err("备份路径不允许超出备份目录".to_string());
         }
         // 确保备份目录存在
-        std::fs::create_dir_all(&backup_dir)
-            .map_err(|e| format!("创建备份目录失败: {e}"))?;
+        std::fs::create_dir_all(&backup_dir).map_err(|e| format!("创建备份目录失败: {e}"))?;
         std::fs::copy(src, &canonical_dst).map_err(|e| format!("备份失败: {e}"))?;
         tracing::info!(action = "backup_database", src = %src, dst = %canonical_dst.display(), "数据库备份完成");
         Ok(canonical_dst.display().to_string())
@@ -1675,7 +1733,9 @@ mod commands {
             .join("backups");
         let src_path = backup_dir.join(&backup_path);
         let canonical_src = src_path.canonicalize().unwrap_or_else(|_| src_path.clone());
-        let canonical_dir = backup_dir.canonicalize().unwrap_or_else(|_| backup_dir.clone());
+        let canonical_dir = backup_dir
+            .canonicalize()
+            .unwrap_or_else(|_| backup_dir.clone());
         if !canonical_src.starts_with(&canonical_dir) {
             return Err("恢复路径不允许超出备份目录".to_string());
         }
@@ -1735,7 +1795,9 @@ mod commands {
         limit: usize,
     ) -> Result<storage::sqlite::PaginatedResult<storage::sqlite::WorkflowExecution>, String> {
         state.auth.require_role("execution.list")?;
-        state.db.list_executions_by_workflow(&workflow_id, offset, limit)
+        state
+            .db
+            .list_executions_by_workflow(&workflow_id, offset, limit)
     }
 
     // ============================================================
@@ -1835,11 +1897,11 @@ mod commands {
         state.auth.clear();
         state.db.delete_auth_token("default")?;
         // 审计日志
-        if let Err(e) = state.db.insert_audit_log(&new_audit_log(
-            "auth.clear_key",
-            "auth",
-            "{}".to_string(),
-        )) {
+        if let Err(e) =
+            state
+                .db
+                .insert_audit_log(&new_audit_log("auth.clear_key", "auth", "{}".to_string()))
+        {
             tracing::error!(action = "audit_log_write", error = %e, "写入审计日志失败");
         }
         tracing::info!(action = "auth_clear_key", "API Key 已清除");
@@ -1852,10 +1914,7 @@ mod commands {
 
     /// 设置当前用户角色（仅 Admin 可操作）
     #[tauri::command]
-    pub fn auth_set_role(
-        state: tauri::State<AppState>,
-        role: String,
-    ) -> Result<(), String> {
+    pub fn auth_set_role(state: tauri::State<AppState>, role: String) -> Result<(), String> {
         // 只有 Admin 可以切换角色
         let current_role = state.auth.get_role();
         if current_role != UserRole::Admin {
@@ -1906,9 +1965,7 @@ mod commands {
 
     /// 验证审计日志哈希链完整性（合规审计）
     #[tauri::command]
-    pub fn verify_audit_chain(
-        state: tauri::State<AppState>,
-    ) -> Result<serde_json::Value, String> {
+    pub fn verify_audit_chain(state: tauri::State<AppState>) -> Result<serde_json::Value, String> {
         state.auth.require_role("execution.list")?;
         let (total, valid, invalid_details) = state.db.verify_audit_chain()?;
         Ok(serde_json::json!({

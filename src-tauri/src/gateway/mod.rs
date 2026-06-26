@@ -23,11 +23,7 @@ impl McpClient {
         }
     }
 
-    pub async fn call_tool(
-        &mut self,
-        tool_name: &str,
-        arguments: Value,
-    ) -> Result<ToolCallResult> {
+    pub async fn call_tool(&mut self, tool_name: &str, arguments: Value) -> Result<ToolCallResult> {
         match self {
             McpClient::Stdio(client) => client.call_tool(tool_name, arguments).await,
             McpClient::Sse(client) => client.call_tool(tool_name, arguments).await,
@@ -46,10 +42,8 @@ pub async fn create_mcp_client(
 ) -> Result<McpClient, String> {
     match protocol {
         "stdio" => {
-            let env_vec: Vec<(String, String)> = env
-                .iter()
-                .map(|(k, v)| (k.clone(), v.clone()))
-                .collect();
+            let env_vec: Vec<(String, String)> =
+                env.iter().map(|(k, v)| (k.clone(), v.clone())).collect();
             let client = stdio::StdioClient::connect(command, args, &env_vec)
                 .await
                 .map_err(|e| format!("连接 stdio MCP 服务器失败: {e}"))?;

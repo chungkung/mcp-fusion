@@ -32,7 +32,10 @@ impl StreamableHttpClient {
             session_id: None,
         };
 
-        client.initialize().await.map_err(|e| format!("streamable-http 初始化失败: {e}"))?;
+        client
+            .initialize()
+            .await
+            .map_err(|e| format!("streamable-http 初始化失败: {e}"))?;
 
         Ok(client)
     }
@@ -154,9 +157,7 @@ impl StreamableHttpClient {
             "params": params,
         });
 
-        let mut req = self.http_client
-            .post(&self.endpoint)
-            .json(&notification);
+        let mut req = self.http_client.post(&self.endpoint).json(&notification);
         if let Some(ref sid) = self.session_id {
             req = req.header("Mcp-Session-Id", sid);
         }
@@ -176,7 +177,10 @@ impl StreamableHttpClient {
         match response.result {
             Some(result) => {
                 let tools: Vec<McpToolInfo> = serde_json::from_value(
-                    result.get("tools").cloned().unwrap_or(serde_json::json!([])),
+                    result
+                        .get("tools")
+                        .cloned()
+                        .unwrap_or(serde_json::json!([])),
                 )
                 .map_err(|e| anyhow::anyhow!("解析工具列表失败: {e}"))?;
                 Ok(tools)
@@ -191,11 +195,7 @@ impl StreamableHttpClient {
         }
     }
 
-    pub async fn call_tool(
-        &mut self,
-        tool_name: &str,
-        arguments: Value,
-    ) -> Result<ToolCallResult> {
+    pub async fn call_tool(&mut self, tool_name: &str, arguments: Value) -> Result<ToolCallResult> {
         let params = serde_json::json!({
             "name": tool_name,
             "arguments": arguments,

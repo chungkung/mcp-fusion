@@ -10,10 +10,10 @@
 
 use opentelemetry::trace::TracerProvider as _;
 use opentelemetry::KeyValue;
-use opentelemetry_sdk::trace::{Config, TracerProvider};
-use opentelemetry_sdk::Resource;
 use opentelemetry_otlp::Protocol;
 use opentelemetry_otlp::WithExportConfig;
+use opentelemetry_sdk::trace::{Config, TracerProvider};
+use opentelemetry_sdk::Resource;
 use std::sync::OnceLock;
 
 /// 全局 TracerProvider 持有者，确保在程序生命周期内不被 drop
@@ -56,9 +56,10 @@ pub fn init_tracer(
         }
     };
 
-    let resource = Resource::new(vec![
-        KeyValue::new("service.name", service_name.to_string()),
-    ]);
+    let resource = Resource::new(vec![KeyValue::new(
+        "service.name",
+        service_name.to_string(),
+    )]);
 
     let config = Config::default().with_resource(resource);
 

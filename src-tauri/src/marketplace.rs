@@ -8,8 +8,10 @@
 // - 版本管理与更新通知
 // ============================================================
 
+use crate::storage::sqlite::{
+    Workflow, WorkflowEdge, WorkflowNode, WorkflowNodeData, WorkflowNodePosition,
+};
 use serde::{Deserialize, Serialize};
-use crate::storage::sqlite::{Workflow, WorkflowNode, WorkflowEdge, WorkflowNodePosition, WorkflowNodeData};
 
 // ============================================================
 // 模板数据结构
@@ -95,7 +97,8 @@ pub struct RegistryConfig {
 impl Default for RegistryConfig {
     fn default() -> Self {
         Self {
-            index_url: "https://raw.githubusercontent.com/mcp-fusion/templates/main/index.json".to_string(),
+            index_url: "https://raw.githubusercontent.com/mcp-fusion/templates/main/index.json"
+                .to_string(),
             base_url: "https://raw.githubusercontent.com/mcp-fusion/templates/main".to_string(),
             token: None,
         }
@@ -109,10 +112,15 @@ impl RegistryConfig {
             .unwrap_or_else(|_| Self::default().index_url);
         let base_url = std::env::var("MCP_FUSION_TEMPLATE_BASE_URL")
             .unwrap_or_else(|_| Self::default().base_url);
-        let token = std::env::var("GITHUB_TOKEN").ok()
+        let token = std::env::var("GITHUB_TOKEN")
+            .ok()
             .or_else(|| std::env::var("GITLAB_TOKEN").ok());
 
-        Self { index_url, base_url, token }
+        Self {
+            index_url,
+            base_url,
+            token,
+        }
     }
 }
 
@@ -148,8 +156,13 @@ impl TemplateRegistry {
     }
 
     /// 获取模板索引列表
-    pub async fn list_templates(&self, category: Option<&str>, search: Option<&str>) -> Result<Vec<MarketplaceTemplate>, String> {
-        let resp = self.client
+    pub async fn list_templates(
+        &self,
+        category: Option<&str>,
+        search: Option<&str>,
+    ) -> Result<Vec<MarketplaceTemplate>, String> {
+        let resp = self
+            .client
             .get(&self.config.index_url)
             .send()
             .await
@@ -177,7 +190,9 @@ impl TemplateRegistry {
                 result.retain(|t| {
                     t.name.to_lowercase().contains(&q_lower)
                         || t.description.to_lowercase().contains(&q_lower)
-                        || t.tags.iter().any(|tag| tag.to_lowercase().contains(&q_lower))
+                        || t.tags
+                            .iter()
+                            .any(|tag| tag.to_lowercase().contains(&q_lower))
                 });
             }
         }
@@ -186,18 +201,31 @@ impl TemplateRegistry {
     }
 
     /// 获取模板详情（含完整工作流定义）
-    pub async fn get_template_detail(&self, template_id: &str, version: &str) -> Result<TemplateDetail, String> {
+    pub async fn get_template_detail(
+        &self,
+        template_id: &str,
+        version: &str,
+    ) -> Result<TemplateDetail, String> {
         // 远端路径: {base_url}/{template_id}/{version}/template.json
-        let url = format!("{}/{}/{}/template.json", self.config.base_url, template_id, version);
+        let url = format!(
+            "{}/{}/{}/template.json",
+            self.config.base_url, template_id, version
+        );
 
-        let resp = self.client
+        let resp = self
+            .client
             .get(&url)
             .send()
             .await
             .map_err(|e| format!("获取模板详情失败: {e}"))?;
 
         if !resp.status().is_success() {
-            return Err(format!("模板详情不存在: HTTP {} (id={}, version={})", resp.status(), template_id, version));
+            return Err(format!(
+                "模板详情不存在: HTTP {} (id={}, version={})",
+                resp.status(),
+                template_id,
+                version
+            ));
         }
 
         let detail: TemplateDetail = resp
@@ -239,7 +267,12 @@ pub fn template_to_workflow(template: &TemplateDetail, workflow_id: &str) -> Wor
 use crate::storage::sqlite::Database;
 
 /// 记录模板安装
-pub fn record_install(db: &Database, template_id: &str, workflow_id: &str, version: &str) -> Result<(), String> {
+pub fn record_install(
+    db: &Database,
+    template_id: &str,
+    workflow_id: &str,
+    version: &str,
+) -> Result<(), String> {
     let conn = db.conn().lock().map_err(|e| format!("获取锁失败: {e}"))?;
     let now = chrono::Utc::now().timestamp_millis();
 
@@ -349,7 +382,11 @@ pub fn builtin_templates() -> Vec<MarketplaceTemplate> {
             icon: "📁".to_string(),
             node_count: 2,
             edge_count: 1,
-            tags: vec!["file".to_string(), "batch".to_string(), "convert".to_string()],
+            tags: vec![
+                "file".to_string(),
+                "batch".to_string(),
+                "convert".to_string(),
+            ],
             source_url: String::new(),
             file_url: String::new(),
             updated_at: "2025-01-01".to_string(),
@@ -366,7 +403,11 @@ pub fn builtin_templates() -> Vec<MarketplaceTemplate> {
             icon: "⏰".to_string(),
             node_count: 2,
             edge_count: 1,
-            tags: vec!["cron".to_string(), "schedule".to_string(), "timer".to_string()],
+            tags: vec![
+                "cron".to_string(),
+                "schedule".to_string(),
+                "timer".to_string(),
+            ],
             source_url: String::new(),
             file_url: String::new(),
             updated_at: "2025-01-01".to_string(),
@@ -400,7 +441,11 @@ pub fn builtin_templates() -> Vec<MarketplaceTemplate> {
             icon: "🗄️".to_string(),
             node_count: 2,
             edge_count: 1,
-            tags: vec!["database".to_string(), "migration".to_string(), "sql".to_string()],
+            tags: vec![
+                "database".to_string(),
+                "migration".to_string(),
+                "sql".to_string(),
+            ],
             source_url: String::new(),
             file_url: String::new(),
             updated_at: "2025-01-01".to_string(),
@@ -417,7 +462,11 @@ pub fn builtin_templates() -> Vec<MarketplaceTemplate> {
             icon: "🖼️".to_string(),
             node_count: 3,
             edge_count: 2,
-            tags: vec!["image".to_string(), "compress".to_string(), "watermark".to_string()],
+            tags: vec![
+                "image".to_string(),
+                "compress".to_string(),
+                "watermark".to_string(),
+            ],
             source_url: String::new(),
             file_url: String::new(),
             updated_at: "2025-01-01".to_string(),
@@ -434,7 +483,11 @@ pub fn builtin_templates() -> Vec<MarketplaceTemplate> {
             icon: "🪝".to_string(),
             node_count: 2,
             edge_count: 1,
-            tags: vec!["webhook".to_string(), "trigger".to_string(), "event".to_string()],
+            tags: vec![
+                "webhook".to_string(),
+                "trigger".to_string(),
+                "event".to_string(),
+            ],
             source_url: String::new(),
             file_url: String::new(),
             updated_at: "2025-01-01".to_string(),
@@ -451,7 +504,11 @@ pub fn builtin_templates() -> Vec<MarketplaceTemplate> {
             icon: "📊".to_string(),
             node_count: 2,
             edge_count: 1,
-            tags: vec!["log".to_string(), "analyze".to_string(), "monitor".to_string()],
+            tags: vec![
+                "log".to_string(),
+                "analyze".to_string(),
+                "monitor".to_string(),
+            ],
             source_url: String::new(),
             file_url: String::new(),
             updated_at: "2025-01-01".to_string(),
@@ -504,63 +561,167 @@ pub fn builtin_template_detail(template_id: &str) -> Option<TemplateDetail> {
                     config: serde_json::json!({"toolName": "file_writer", "serverId": "mcp-fs"}),
                 },
             };
-            let e1 = WorkflowEdge { id: "edge_0".to_string(), source: "node_0".to_string(), target: "node_1".to_string(), source_handle: None, target_handle: None, edge_type: Some("smoothstep".to_string()), animated: Some(true) };
-            let e2 = WorkflowEdge { id: "edge_1".to_string(), source: "node_1".to_string(), target: "node_2".to_string(), source_handle: None, target_handle: None, edge_type: Some("smoothstep".to_string()), animated: Some(true) };
+            let e1 = WorkflowEdge {
+                id: "edge_0".to_string(),
+                source: "node_0".to_string(),
+                target: "node_1".to_string(),
+                source_handle: None,
+                target_handle: None,
+                edge_type: Some("smoothstep".to_string()),
+                animated: Some(true),
+            };
+            let e2 = WorkflowEdge {
+                id: "edge_1".to_string(),
+                source: "node_1".to_string(),
+                target: "node_2".to_string(),
+                source_handle: None,
+                target_handle: None,
+                edge_type: Some("smoothstep".to_string()),
+                animated: Some(true),
+            };
             (vec![n1, n2, n3], vec![e1, e2])
         }
         "file-batch-process" => {
             let n1 = WorkflowNode {
-                id: "node_0".to_string(), node_type: "mcpTool".to_string(),
+                id: "node_0".to_string(),
+                node_type: "mcpTool".to_string(),
                 position: WorkflowNodePosition { x: 100.0, y: 100.0 },
-                data: WorkflowNodeData { label: "读取文件".to_string(), tool: None, inputs: serde_json::json!({}), outputs: serde_json::json!({}), config: serde_json::json!({"toolName": "file_reader", "serverId": "mcp-fs"}) },
+                data: WorkflowNodeData {
+                    label: "读取文件".to_string(),
+                    tool: None,
+                    inputs: serde_json::json!({}),
+                    outputs: serde_json::json!({}),
+                    config: serde_json::json!({"toolName": "file_reader", "serverId": "mcp-fs"}),
+                },
             };
             let n2 = WorkflowNode {
-                id: "node_1".to_string(), node_type: "mcpTool".to_string(),
+                id: "node_1".to_string(),
+                node_type: "mcpTool".to_string(),
                 position: WorkflowNodePosition { x: 400.0, y: 100.0 },
-                data: WorkflowNodeData { label: "格式转换".to_string(), tool: None, inputs: serde_json::json!({}), outputs: serde_json::json!({}), config: serde_json::json!({"toolName": "file_convert", "serverId": "mcp-fs"}) },
+                data: WorkflowNodeData {
+                    label: "格式转换".to_string(),
+                    tool: None,
+                    inputs: serde_json::json!({}),
+                    outputs: serde_json::json!({}),
+                    config: serde_json::json!({"toolName": "file_convert", "serverId": "mcp-fs"}),
+                },
             };
-            let e1 = WorkflowEdge { id: "edge_0".to_string(), source: "node_0".to_string(), target: "node_1".to_string(), source_handle: None, target_handle: None, edge_type: Some("smoothstep".to_string()), animated: Some(true) };
+            let e1 = WorkflowEdge {
+                id: "edge_0".to_string(),
+                source: "node_0".to_string(),
+                target: "node_1".to_string(),
+                source_handle: None,
+                target_handle: None,
+                edge_type: Some("smoothstep".to_string()),
+                animated: Some(true),
+            };
             (vec![n1, n2], vec![e1])
         }
         "cron-scheduler" => {
             let n1 = WorkflowNode {
-                id: "node_0".to_string(), node_type: "mcpTool".to_string(),
+                id: "node_0".to_string(),
+                node_type: "mcpTool".to_string(),
                 position: WorkflowNodePosition { x: 100.0, y: 100.0 },
-                data: WorkflowNodeData { label: "Cron 触发器".to_string(), tool: None, inputs: serde_json::json!({}), outputs: serde_json::json!({}), config: serde_json::json!({"toolName": "cron_trigger", "serverId": "mcp-scheduler"}) },
+                data: WorkflowNodeData {
+                    label: "Cron 触发器".to_string(),
+                    tool: None,
+                    inputs: serde_json::json!({}),
+                    outputs: serde_json::json!({}),
+                    config: serde_json::json!({"toolName": "cron_trigger", "serverId": "mcp-scheduler"}),
+                },
             };
             let n2 = WorkflowNode {
-                id: "node_1".to_string(), node_type: "mcpTool".to_string(),
+                id: "node_1".to_string(),
+                node_type: "mcpTool".to_string(),
                 position: WorkflowNodePosition { x: 400.0, y: 100.0 },
-                data: WorkflowNodeData { label: "执行任务".to_string(), tool: None, inputs: serde_json::json!({}), outputs: serde_json::json!({}), config: serde_json::json!({"toolName": "run_task", "serverId": "mcp-scheduler"}) },
+                data: WorkflowNodeData {
+                    label: "执行任务".to_string(),
+                    tool: None,
+                    inputs: serde_json::json!({}),
+                    outputs: serde_json::json!({}),
+                    config: serde_json::json!({"toolName": "run_task", "serverId": "mcp-scheduler"}),
+                },
             };
-            let e1 = WorkflowEdge { id: "edge_0".to_string(), source: "node_0".to_string(), target: "node_1".to_string(), source_handle: None, target_handle: None, edge_type: Some("smoothstep".to_string()), animated: Some(true) };
+            let e1 = WorkflowEdge {
+                id: "edge_0".to_string(),
+                source: "node_0".to_string(),
+                target: "node_1".to_string(),
+                source_handle: None,
+                target_handle: None,
+                edge_type: Some("smoothstep".to_string()),
+                animated: Some(true),
+            };
             (vec![n1, n2], vec![e1])
         }
         "git-pipeline" => {
             let n1 = WorkflowNode {
-                id: "node_0".to_string(), node_type: "mcpTool".to_string(),
+                id: "node_0".to_string(),
+                node_type: "mcpTool".to_string(),
                 position: WorkflowNodePosition { x: 100.0, y: 100.0 },
-                data: WorkflowNodeData { label: "Git Clone".to_string(), tool: None, inputs: serde_json::json!({}), outputs: serde_json::json!({}), config: serde_json::json!({"toolName": "git_clone", "serverId": "mcp-git"}) },
+                data: WorkflowNodeData {
+                    label: "Git Clone".to_string(),
+                    tool: None,
+                    inputs: serde_json::json!({}),
+                    outputs: serde_json::json!({}),
+                    config: serde_json::json!({"toolName": "git_clone", "serverId": "mcp-git"}),
+                },
             };
             let n2 = WorkflowNode {
-                id: "node_1".to_string(), node_type: "mcpTool".to_string(),
+                id: "node_1".to_string(),
+                node_type: "mcpTool".to_string(),
                 position: WorkflowNodePosition { x: 400.0, y: 100.0 },
-                data: WorkflowNodeData { label: "Git Commit".to_string(), tool: None, inputs: serde_json::json!({}), outputs: serde_json::json!({}), config: serde_json::json!({"toolName": "git_commit", "serverId": "mcp-git"}) },
+                data: WorkflowNodeData {
+                    label: "Git Commit".to_string(),
+                    tool: None,
+                    inputs: serde_json::json!({}),
+                    outputs: serde_json::json!({}),
+                    config: serde_json::json!({"toolName": "git_commit", "serverId": "mcp-git"}),
+                },
             };
             let n3 = WorkflowNode {
-                id: "node_2".to_string(), node_type: "mcpTool".to_string(),
+                id: "node_2".to_string(),
+                node_type: "mcpTool".to_string(),
                 position: WorkflowNodePosition { x: 700.0, y: 100.0 },
-                data: WorkflowNodeData { label: "Git Push".to_string(), tool: None, inputs: serde_json::json!({}), outputs: serde_json::json!({}), config: serde_json::json!({"toolName": "git_push", "serverId": "mcp-git"}) },
+                data: WorkflowNodeData {
+                    label: "Git Push".to_string(),
+                    tool: None,
+                    inputs: serde_json::json!({}),
+                    outputs: serde_json::json!({}),
+                    config: serde_json::json!({"toolName": "git_push", "serverId": "mcp-git"}),
+                },
             };
-            let e1 = WorkflowEdge { id: "edge_0".to_string(), source: "node_0".to_string(), target: "node_1".to_string(), source_handle: None, target_handle: None, edge_type: Some("smoothstep".to_string()), animated: Some(true) };
-            let e2 = WorkflowEdge { id: "edge_1".to_string(), source: "node_1".to_string(), target: "node_2".to_string(), source_handle: None, target_handle: None, edge_type: Some("smoothstep".to_string()), animated: Some(true) };
+            let e1 = WorkflowEdge {
+                id: "edge_0".to_string(),
+                source: "node_0".to_string(),
+                target: "node_1".to_string(),
+                source_handle: None,
+                target_handle: None,
+                edge_type: Some("smoothstep".to_string()),
+                animated: Some(true),
+            };
+            let e2 = WorkflowEdge {
+                id: "edge_1".to_string(),
+                source: "node_1".to_string(),
+                target: "node_2".to_string(),
+                source_handle: None,
+                target_handle: None,
+                edge_type: Some("smoothstep".to_string()),
+                animated: Some(true),
+            };
             (vec![n1, n2, n3], vec![e1, e2])
         }
         _ => {
             let n1 = WorkflowNode {
-                id: "node_0".to_string(), node_type: "mcpTool".to_string(),
+                id: "node_0".to_string(),
+                node_type: "mcpTool".to_string(),
                 position: WorkflowNodePosition { x: 100.0, y: 100.0 },
-                data: WorkflowNodeData { label: name.clone(), tool: None, inputs: serde_json::json!({}), outputs: serde_json::json!({}), config: serde_json::json!({"toolName": "http_request", "serverId": "mcp-http"}) },
+                data: WorkflowNodeData {
+                    label: name.clone(),
+                    tool: None,
+                    inputs: serde_json::json!({}),
+                    outputs: serde_json::json!({}),
+                    config: serde_json::json!({"toolName": "http_request", "serverId": "mcp-http"}),
+                },
             };
             (vec![n1], vec![])
         }

@@ -91,9 +91,7 @@ pub fn gather_metrics() -> String {
 
 /// 记录工作流执行结果
 pub fn record_workflow_execution(status: &str, duration_secs: f64) {
-    WORKFLOW_EXECUTIONS_TOTAL
-        .with_label_values(&[status])
-        .inc();
+    WORKFLOW_EXECUTIONS_TOTAL.with_label_values(&[status]).inc();
     WORKFLOW_EXECUTION_DURATION
         .with_label_values(&[])
         .observe(duration_secs);
@@ -101,9 +99,7 @@ pub fn record_workflow_execution(status: &str, duration_secs: f64) {
 
 /// 记录节点执行结果
 pub fn record_node_execution(status: &str, duration_secs: f64) {
-    NODE_EXECUTIONS_TOTAL
-        .with_label_values(&[status])
-        .inc();
+    NODE_EXECUTIONS_TOTAL.with_label_values(&[status]).inc();
     NODE_EXECUTION_DURATION
         .with_label_values(&[])
         .observe(duration_secs);
@@ -111,9 +107,7 @@ pub fn record_node_execution(status: &str, duration_secs: f64) {
 
 /// 记录 MCP 工具调用结果
 pub fn record_tool_call(status: &str, duration_secs: f64) {
-    MCP_TOOL_CALLS_TOTAL
-        .with_label_values(&[status])
-        .inc();
+    MCP_TOOL_CALLS_TOTAL.with_label_values(&[status]).inc();
     MCP_TOOL_CALL_DURATION
         .with_label_values(&[])
         .observe(duration_secs);

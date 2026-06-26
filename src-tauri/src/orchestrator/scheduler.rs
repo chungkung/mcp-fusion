@@ -1,4 +1,4 @@
-﻿use std::collections::{HashMap, HashSet, VecDeque};
+use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::Arc;
 use std::time::Duration;
 
@@ -12,9 +12,9 @@ use tokio::sync::Mutex;
 use tokio::sync::Semaphore;
 
 use crate::gateway::McpClient;
-use crate::storage::sqlite::{Database, WorkflowEdge, WorkflowNode};
 #[cfg(feature = "tauri-runtime")]
 use crate::storage::sqlite::Workflow;
+use crate::storage::sqlite::{Database, WorkflowEdge, WorkflowNode};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex as StdMutex;
 use std::sync::OnceLock;
@@ -59,8 +59,6 @@ pub fn request_abort_all() {
         flag.store(true, Ordering::SeqCst);
     }
 }
-
-
 
 /// 检查是否有任何工作流正在运行
 pub fn is_running() -> bool {
@@ -766,10 +764,7 @@ impl Scheduler {
             NodeState::Timeout => "timeout",
             _ => "unknown",
         };
-        crate::metrics::record_workflow_execution(
-            wf_status,
-            total_duration_ms as f64 / 1000.0,
-        );
+        crate::metrics::record_workflow_execution(wf_status, total_duration_ms as f64 / 1000.0);
         for r in &node_results {
             let node_status = match r.state {
                 NodeState::Success => "success",
@@ -778,10 +773,7 @@ impl Scheduler {
                 NodeState::Timeout => "timeout",
                 _ => continue,
             };
-            crate::metrics::record_node_execution(
-                node_status,
-                r.duration_ms as f64 / 1000.0,
-            );
+            crate::metrics::record_node_execution(node_status, r.duration_ms as f64 / 1000.0);
         }
 
         WorkflowExecutionResult {
@@ -1127,7 +1119,11 @@ async fn execute_node_inner(
     let _tool_span_guard = tool_span.enter();
 
     let result = loop {
-        let attempt = client.lock().await.call_tool(&tool.name, inputs.clone()).await;
+        let attempt = client
+            .lock()
+            .await
+            .call_tool(&tool.name, inputs.clone())
+            .await;
         match attempt {
             Ok(r) => break r,
             Err(_e) if retry_remaining > 0 => {
@@ -1144,20 +1140,14 @@ async fn execute_node_inner(
                 backoff *= 2; // 指数退避
             }
             Err(e) => {
-                crate::metrics::record_tool_call(
-                    "failed",
-                    tool_call_start.elapsed().as_secs_f64(),
-                );
+                crate::metrics::record_tool_call("failed", tool_call_start.elapsed().as_secs_f64());
                 return Err(anyhow::anyhow!("工具调用失败（已重试）: {e}"));
             }
         }
     };
 
     if result.is_error.unwrap_or(false) {
-        crate::metrics::record_tool_call(
-            "failed",
-            tool_call_start.elapsed().as_secs_f64(),
-        );
+        crate::metrics::record_tool_call("failed", tool_call_start.elapsed().as_secs_f64());
         let error_text = result
             .content
             .iter()
@@ -1184,16 +1174,10 @@ async fn execute_node_inner(
 
     // 尝试解析为 JSON，失败则返回纯文本
     if let Ok(json) = serde_json::from_str::<Value>(&output_text) {
-        crate::metrics::record_tool_call(
-            "success",
-            tool_call_start.elapsed().as_secs_f64(),
-        );
+        crate::metrics::record_tool_call("success", tool_call_start.elapsed().as_secs_f64());
         Ok(json)
     } else {
-        crate::metrics::record_tool_call(
-            "success",
-            tool_call_start.elapsed().as_secs_f64(),
-        );
+        crate::metrics::record_tool_call("success", tool_call_start.elapsed().as_secs_f64());
         Ok(Value::String(output_text))
     }
 }

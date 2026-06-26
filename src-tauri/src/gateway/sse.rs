@@ -109,7 +109,10 @@ impl SseClient {
                         }
                     }
                     Err(e) => {
-                        tracing::error!("SSE 流读取错误: {}", crate::crypto::sanitize_log(&e.to_string()));
+                        tracing::error!(
+                            "SSE 流读取错误: {}",
+                            crate::crypto::sanitize_log(&e.to_string())
+                        );
                         break;
                     }
                 }
@@ -128,7 +131,10 @@ impl SseClient {
 
         // 等待 endpoint 事件
         client.wait_for_endpoint().await?;
-        client.initialize().await.map_err(|e| format!("SSE 初始化失败: {e}"))?;
+        client
+            .initialize()
+            .await
+            .map_err(|e| format!("SSE 初始化失败: {e}"))?;
 
         Ok(client)
     }
@@ -185,11 +191,7 @@ impl SseClient {
         Ok(())
     }
 
-    async fn send_request(
-        &mut self,
-        method: &str,
-        params: Value,
-    ) -> Result<JsonRpcResponse> {
+    async fn send_request(&mut self, method: &str, params: Value) -> Result<JsonRpcResponse> {
         let id = self.next_id;
         self.next_id += 1;
 
@@ -217,7 +219,8 @@ impl SseClient {
             pending.insert(id, tx);
         }
 
-        let response = self.http_client
+        let response = self
+            .http_client
             .post(&post_url)
             .json(&request)
             .send()
@@ -292,7 +295,10 @@ impl SseClient {
         match response.result {
             Some(result) => {
                 let tools: Vec<McpToolInfo> = serde_json::from_value(
-                    result.get("tools").cloned().unwrap_or(serde_json::json!([])),
+                    result
+                        .get("tools")
+                        .cloned()
+                        .unwrap_or(serde_json::json!([])),
                 )
                 .map_err(|e| anyhow::anyhow!("解析工具列表失败: {e}"))?;
                 Ok(tools)
@@ -307,11 +313,7 @@ impl SseClient {
         }
     }
 
-    pub async fn call_tool(
-        &mut self,
-        tool_name: &str,
-        arguments: Value,
-    ) -> Result<ToolCallResult> {
+    pub async fn call_tool(&mut self, tool_name: &str, arguments: Value) -> Result<ToolCallResult> {
         let params = serde_json::json!({
             "name": tool_name,
             "arguments": arguments,

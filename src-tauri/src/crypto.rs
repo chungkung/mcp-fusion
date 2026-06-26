@@ -28,8 +28,7 @@ fn derive_key(phrase: &str) -> [u8; KEY_SIZE] {
 /// 返回 Base64 编码的密文（nonce + ciphertext 拼接）
 pub fn encrypt(plaintext: &str, passphrase: &str) -> Result<String, String> {
     let key = derive_key(passphrase);
-    let cipher = Aes256Gcm::new_from_slice(&key)
-        .map_err(|e| format!("创建加密器失败: {e}"))?;
+    let cipher = Aes256Gcm::new_from_slice(&key).map_err(|e| format!("创建加密器失败: {e}"))?;
 
     let mut rng = rand::thread_rng();
     let mut nonce_bytes = [0u8; 12];
@@ -44,21 +43,20 @@ pub fn encrypt(plaintext: &str, passphrase: &str) -> Result<String, String> {
     let mut combined = Vec::with_capacity(12 + ciphertext.len());
     combined.extend_from_slice(&nonce_bytes);
     combined.extend_from_slice(&ciphertext);
-    Ok(base64::Engine::encode(&base64::engine::general_purpose::STANDARD, &combined))
+    Ok(base64::Engine::encode(
+        &base64::engine::general_purpose::STANDARD,
+        &combined,
+    ))
 }
 
 /// 解密敏感数据（AES-256-GCM）
 /// 输入为 Base64 编码的密文
 pub fn decrypt(encrypted: &str, passphrase: &str) -> Result<String, String> {
     let key = derive_key(passphrase);
-    let cipher = Aes256Gcm::new_from_slice(&key)
-        .map_err(|e| format!("创建解密器失败: {e}"))?;
+    let cipher = Aes256Gcm::new_from_slice(&key).map_err(|e| format!("创建解密器失败: {e}"))?;
 
-    let combined = base64::Engine::decode(
-        &base64::engine::general_purpose::STANDARD,
-        encrypted,
-    )
-    .map_err(|e| format!("Base64 解码失败: {e}"))?;
+    let combined = base64::Engine::decode(&base64::engine::general_purpose::STANDARD, encrypted)
+        .map_err(|e| format!("Base64 解码失败: {e}"))?;
 
     if combined.len() < 12 {
         return Err("密文数据损坏".to_string());
@@ -121,11 +119,23 @@ pub fn hmac_sha256_hex(data: &str, key: &str) -> String {
 
 /// 敏感字段关键词（不区分大小写匹配）
 const SENSITIVE_KEYWORDS: &[&str] = &[
-    "api_key", "apikey", "api-key",
-    "token", "secret", "password", "passwd", "passphrase",
-    "authorization", "auth", "credential",
-    "private_key", "private-key", "privatekey",
-    "access_key", "access-key", "accesskey",
+    "api_key",
+    "apikey",
+    "api-key",
+    "token",
+    "secret",
+    "password",
+    "passwd",
+    "passphrase",
+    "authorization",
+    "auth",
+    "credential",
+    "private_key",
+    "private-key",
+    "privatekey",
+    "access_key",
+    "access-key",
+    "accesskey",
 ];
 
 /// 脱敏日志内容：将敏感字段的值替换为 `[REDACTED]`。
@@ -186,8 +196,8 @@ pub fn sanitize_log(input: &str) -> String {
                     let mut found = false;
                     for prefix in &prefixes {
                         if let Some(rest_no_prefix) = rest.strip_prefix(prefix) {
-                            let value_start = after_key
-                                + (result[after_key..].find(rest_no_prefix).unwrap_or(0));
+                            let value_start =
+                                after_key + (result[after_key..].find(rest_no_prefix).unwrap_or(0));
                             let end = rest_no_prefix
                                 .find(|c: char| {
                                     c == double_quote || c == '\'' || c == ',' || c == '\n'

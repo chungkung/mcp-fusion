@@ -56,8 +56,7 @@ impl LlmConfig {
             .or_else(|_| std::env::var("OPENAI_API_KEY"))
             .unwrap_or_default();
 
-        let model = std::env::var("LLM_MODEL")
-            .unwrap_or_else(|_| Self::default().model);
+        let model = std::env::var("LLM_MODEL").unwrap_or_else(|_| Self::default().model);
 
         let max_tokens = std::env::var("LLM_MAX_TOKENS")
             .ok()
@@ -145,11 +144,7 @@ impl LlmClient {
     }
 
     /// 发送聊天请求
-    pub async fn chat(
-        &self,
-        system_prompt: &str,
-        user_message: &str,
-    ) -> Result<String, String> {
+    pub async fn chat(&self, system_prompt: &str, user_message: &str) -> Result<String, String> {
         if !self.config.is_configured() {
             return Err("LLM 未配置 (缺少 API Key)".to_string());
         }
@@ -499,15 +494,17 @@ pub async fn refine_workflow_with_llm(
 
 只输出 JSON，不要输出任何其他内容。"#,
         serde_json::to_string_pretty(&session.current_workflow).unwrap_or_default(),
-        available_tools.iter().map(|t| format!("- {}.{}", t.server_id, t.name)).collect::<Vec<_>>().join("\n"),
+        available_tools
+            .iter()
+            .map(|t| format!("- {}.{}", t.server_id, t.name))
+            .collect::<Vec<_>>()
+            .join("\n"),
         refinement_text,
     );
 
-    let response = client.chat_with_history(
-        &system_prompt,
-        &session.to_history(),
-        refinement_text,
-    ).await?;
+    let response = client
+        .chat_with_history(&system_prompt, &session.to_history(), refinement_text)
+        .await?;
 
     let json_str = extract_json_from_response(&response);
     let parsed: ParsedWorkflow = serde_json::from_str(&json_str)
@@ -554,12 +551,16 @@ pub async fn recommend_tools(
     let response = client.chat(&system_prompt, user_text).await?;
     let json_str = extract_json_from_response(&response);
 
-    let indices: Vec<usize> = serde_json::from_str(&json_str)
-        .map_err(|e| format!("工具推荐响应格式无效: {e}"))?;
+    let indices: Vec<usize> =
+        serde_json::from_str(&json_str).map_err(|e| format!("工具推荐响应格式无效: {e}"))?;
 
     let recommended: Vec<String> = indices
         .into_iter()
-        .filter_map(|i| available_tools.get(i).map(|t| format!("{}.{}", t.server_id, t.name)))
+        .filter_map(|i| {
+            available_tools
+                .get(i)
+                .map(|t| format!("{}.{}", t.server_id, t.name))
+        })
         .collect();
 
     Ok(recommended)
@@ -638,9 +639,21 @@ mod tests {
     #[test]
     fn test_keyword_recommend_tools() {
         let tools = vec![
-            ToolInfo { server_id: "s1".to_string(), name: "http_request".to_string(), description: "Make HTTP requests".to_string() },
-            ToolInfo { server_id: "s2".to_string(), name: "file_writer".to_string(), description: "Write files to disk".to_string() },
-            ToolInfo { server_id: "s3".to_string(), name: "db_query".to_string(), description: "Query database".to_string() },
+            ToolInfo {
+                server_id: "s1".to_string(),
+                name: "http_request".to_string(),
+                description: "Make HTTP requests".to_string(),
+            },
+            ToolInfo {
+                server_id: "s2".to_string(),
+                name: "file_writer".to_string(),
+                description: "Write files to disk".to_string(),
+            },
+            ToolInfo {
+                server_id: "s3".to_string(),
+                name: "db_query".to_string(),
+                description: "Query database".to_string(),
+            },
         ];
         let result = keyword_recommend_tools("download a file from http and save it", &tools);
         assert!(!result.is_empty());
@@ -659,9 +672,11 @@ mod tests {
 
     #[test]
     fn test_build_intent_system_prompt() {
-        let tools = vec![
-            ToolInfo { server_id: "mcp-http".to_string(), name: "http_request".to_string(), description: "发送HTTP请求".to_string() },
-        ];
+        let tools = vec![ToolInfo {
+            server_id: "mcp-http".to_string(),
+            name: "http_request".to_string(),
+            description: "发送HTTP请求".to_string(),
+        }];
         let prompt = build_intent_system_prompt(&tools);
         assert!(prompt.contains("mcp-http.http_request"));
         assert!(prompt.contains("工作流编排专家"));
