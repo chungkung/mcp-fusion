@@ -1,0 +1,60 @@
+{
+    "name": "mcp-fusion",
+    "private": true,
+    "version": "0.1.0",
+    "description": "MCP Fusion - 多协议融合编排平台",
+    "license": "AGPL-3.0",
+    "type": "module",
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "scripts": {
+        "dev": "cd src-frontend && vite",
+        "build:frontend": "cd src-frontend && tsc && vite build",
+        "lint": "cd src-frontend && tsc --noEmit",
+        "format": "cd src-frontend && prettier --write \"src/**/*.{ts,tsx,css,json}\"",
+        "preview": "cd src-frontend && vite preview",
+        "tauri:dev": "tauri dev",
+        "tauri:build": "tauri build",
+        "tauri:build:debug": "tauri build --debug",
+        "build:all": "npm run build:frontend && npm run tauri:build",
+        "build:win": "npm run build:frontend && tauri build --target x86_64-pc-windows-msvc",
+        "build:mac": "npm run build:frontend && tauri build --target aarch64-apple-darwin",
+        "build:mac:intel": "npm run build:frontend && tauri build --target x86_64-apple-darwin",
+        "build:linux": "npm run build:frontend && tauri build --target x86_64-unknown-linux-gnu",
+        "build:linux:arm64": "npm run build:frontend && tauri build --target aarch64-unknown-linux-gnu",
+        "sign:mac": "codesign --deep --force --verify --verbose --sign \"Developer ID Application: YOUR_TEAM\" \"src-tauri/target/release/bundle/macos/MCP Fusion.app\"",
+        "notarize:mac": "xcrun notarytool submit \"src-tauri/target/release/bundle/macos/MCP Fusion.app\" --apple-id YOUR_APPLE_ID --team-id YOUR_TEAM_ID --password YOUR_APP_PASSWORD --wait",
+        "gen:update-key": "tauri signer generate -w ./key.key -p ./key.pub"
+    },
+    "dependencies": {
+        "@tauri-apps/api": "^2",
+        "@tauri-apps/plugin-opener": "^2",
+        "@tauri-apps/plugin-updater": "^2",
+        "@tsparticles/engine": "^3.7.0",
+        "@tsparticles/react": "^3.0.0",
+        "@tsparticles/slim": "^3.7.0",
+        "@xyflow/react": "^12.11.0",
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.1",
+        "framer-motion": "^11.0.0",
+        "lucide-react": "^1.18.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-hot-toast": "^2.5.0",
+        "react-router-dom": "^6.26.0",
+        "tailwind-merge": "^2.5.0",
+        "zustand": "^4.5.0"
+    },
+    "devDependencies": {
+        "@tauri-apps/cli": "^2",
+        "@types/react": "^18.3.0",
+        "@types/react-dom": "^18.3.0",
+        "@vitejs/plugin-react": "^4.3.0",
+        "autoprefixer": "^10.5.0",
+        "tailwindcss": "^3.4.1",
+        "tailwindcss-animate": "^1.0.7",
+        "typescript": "~5.6.2",
+        "vite": "^6.0.3"
+    }
+}

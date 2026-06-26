@@ -1,0 +1,44 @@
+{
+  "name": "Database Backup & Notify",
+  "description": "Backup database, compress, and send notification. Demonstrates sequential execution with data passing.",
+  "nodes": [
+    {
+      "tool_name": "query",
+      "server_id": "postgres",
+      "label": "Backup Database",
+      "position_x": 100,
+      "position_y": 100,
+      "inputs": {
+        "sql": "SELECT pg_dump('mydb')"
+      }
+    },
+    {
+      "tool_name": "write_file",
+      "server_id": "filesystem",
+      "label": "Save Backup",
+      "position_x": 100,
+      "position_y": 300,
+      "inputs": {
+        "path": "/backups/{{timestamp}}.sql",
+        "content": "{{node_0.result}}"
+      }
+    },
+    {
+      "tool_name": "create_issue",
+      "server_id": "github",
+      "label": "Notify on Failure",
+      "position_x": 100,
+      "position_y": 500,
+      "inputs": {
+        "owner": "my-org",
+        "repo": "ops-alerts",
+        "title": "Backup failed at {{timestamp}}",
+        "body": "{{node_0.error}}"
+      }
+    }
+  ],
+  "edges": [
+    { "source_index": 0, "target_index": 1 },
+    { "source_index": 1, "target_index": 2 }
+  ]
+}

@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test-backend:
+    name: Test (Rust)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+      - name: Cargo check
+        run: cargo check --no-default-features
+        working-directory: src-tauri
+      - name: Cargo test
+        run: cargo test --no-default-features
+        working-directory: src-tauri
+      - name: Cargo fmt
+        run: cargo fmt --all -- --check
+        working-directory: src-tauri
+      - name: Cargo clippy
+        run: cargo clippy --no-default-features -- -D warnings
+        working-directory: src-tauri
+
+  test-frontend:
+    name: Test (Frontend)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npx tsc --noEmit
+        working-directory: src-frontend

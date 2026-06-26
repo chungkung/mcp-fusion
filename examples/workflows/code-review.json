@@ -1,0 +1,57 @@
+{
+  "name": "Code Review Pipeline",
+  "description": "Fetch PR diff, run static analysis, search for similar issues, and post review comment. Demonstrates MCP Fusion's developer workflow automation.",
+  "nodes": [
+    {
+      "tool_name": "get_pull_request",
+      "server_id": "github",
+      "label": "Get PR Diff",
+      "position_x": 100,
+      "position_y": 100,
+      "inputs": {
+        "owner": "{{input.owner}}",
+        "repo": "{{input.repo}}",
+        "pull_number": "{{input.pr_number}}"
+      }
+    },
+    {
+      "tool_name": "brave_search",
+      "server_id": "brave-search",
+      "label": "Search Similar Issues",
+      "position_x": 400,
+      "position_y": 100,
+      "inputs": {
+        "query": "site:github.com/{{input.owner}}/{{input.repo}}/issues {{node_0.title}}"
+      }
+    },
+    {
+      "tool_name": "write_file",
+      "server_id": "filesystem",
+      "label": "Save Review Report",
+      "position_x": 250,
+      "position_y": 300,
+      "inputs": {
+        "path": "/reviews/pr-{{input.pr_number}}-review.md",
+        "content": "# PR Review: {{node_0.title}}\n\n## Diff\n```\n{{node_0.diff}}\n```\n\n## Related Issues\n{{node_1.results}}"
+      }
+    },
+    {
+      "tool_name": "create_issue_comment",
+      "server_id": "github",
+      "label": "Post Review",
+      "position_x": 250,
+      "position_y": 500,
+      "inputs": {
+        "owner": "{{input.owner}}",
+        "repo": "{{input.repo}}",
+        "issue_number": "{{input.pr_number}}",
+        "body": "Automated review complete. See report: {{node_2.path}}"
+      }
+    }
+  ],
+  "edges": [
+    { "source_index": 0, "target_index": 2 },
+    { "source_index": 1, "target_index": 2 },
+    { "source_index": 2, "target_index": 3 }
+  ]
+}

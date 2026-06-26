@@ -1,0 +1,55 @@
+{
+  "name": "Multi-Source Research Pipeline",
+  "description": "Search multiple sources, fetch content, summarize, and save to file. Demonstrates MCP Fusion's multi-server orchestration capabilities.",
+  "nodes": [
+    {
+      "tool_name": "brave_search",
+      "server_id": "brave-search",
+      "label": "Search Web",
+      "position_x": 100,
+      "position_y": 100,
+      "inputs": { "query": "{{input.query}}", "count": 5 }
+    },
+    {
+      "tool_name": "github_search_repositories",
+      "server_id": "github",
+      "label": "Search GitHub",
+      "position_x": 350,
+      "position_y": 100,
+      "inputs": { "query": "{{input.query}}", "per_page": 5 }
+    },
+    {
+      "tool_name": "fetch",
+      "server_id": "fetch",
+      "label": "Fetch Top Result",
+      "position_x": 100,
+      "position_y": 300,
+      "inputs": { "url": "{{node_0.results[0].url}}" }
+    },
+    {
+      "tool_name": "fetch",
+      "server_id": "fetch",
+      "label": "Fetch Top Repo",
+      "position_x": 350,
+      "position_y": 300,
+      "inputs": { "url": "{{node_1.items[0].html_url}}" }
+    },
+    {
+      "tool_name": "write_file",
+      "server_id": "filesystem",
+      "label": "Save Research",
+      "position_x": 225,
+      "position_y": 500,
+      "inputs": {
+        "path": "/output/research.md",
+        "content": "# Research Report\n\n## Web Results\n{{node_2.content}}\n\n## GitHub Results\n{{node_3.content}}"
+      }
+    }
+  ],
+  "edges": [
+    { "source_index": 0, "target_index": 2 },
+    { "source_index": 1, "target_index": 3 },
+    { "source_index": 2, "target_index": 4 },
+    { "source_index": 3, "target_index": 4 }
+  ]
+}

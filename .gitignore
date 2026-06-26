@@ -1,0 +1,186 @@
+# ============================================================
+# OS 系统文件
+# ============================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+*.icloud
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+*~
+
+# ============================================================
+# IDE / Editor
+# ============================================================
+
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# JetBrains
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Vim
+*.swp
+*.swo
+*.swn
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+*.elc
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Eclipse
+.project
+.classpath
+.settings/
+.metadata/
+
+# Visual Studio
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vs/
+
+# ============================================================
+# Node / 依赖
+# ============================================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+yarn.lock
+pnpm-lock.yaml
+.pnpm-store/
+
+# ============================================================
+# Vite 构建产物
+# ============================================================
+
+dist/
+dist-ssr/
+*.local
+.vite/
+
+# ============================================================
+# Tauri 编译产物
+# ============================================================
+
+src-tauri/target/
+src-tauri/target-*/
+src-tauri/gen/
+src-tauri/WixTools/
+src-tauri/*.msi
+src-tauri/*.dmg
+src-tauri/*.AppImage
+src-tauri/*.deb
+src-tauri/*.rpm
+*.exe
+
+# ============================================================
+# 签名密钥（安全敏感）
+# ============================================================
+
+*.key
+*.key.pub
+!key.pub.example
+
+# ============================================================
+# 环境变量
+# ============================================================
+
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+!.env.example
+
+# ============================================================
+# 日志 & 临时文件
+# ============================================================
+
+logs/
+*.log
+stdout.txt
+stderr.txt
+test_*.txt
+*.tmp
+*.temp
+*.bak
+*.cache
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+*.lcov
+.nyc_output/
+
+# ============================================================
+# 其他
+# ============================================================
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# ESLint
+.eslintcache
+
+# Testing
+test-results/
+playwright-report/
+
+# ============================================================
+# 数据库
+# ============================================================
+
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# ============================================================
+# Dashboard
+# ============================================================
+
+.grafana/
+.prometheus/

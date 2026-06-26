@@ -1,0 +1,3 @@
+# 构建配置
+[build]
+target-dir = "target-p12"
