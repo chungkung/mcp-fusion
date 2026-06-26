@@ -8,25 +8,32 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+permissions:
+  contents: write
+
 jobs:
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
     outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      tag: ${{ steps.create_release.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: MCP Fusion ${{ github.ref_name }}
-          draft: true
-          prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
-          generate_release_notes: true
-          files: ""
+        run: |
+          IS_PRERELEASE=false
+          if echo "${{ github.ref_name }}" | grep -qE 'alpha|beta|rc'; then
+            IS_PRERELEASE=true
+          fi
+          gh release create "${{ github.ref_name }}" \
+            --title "MCP Fusion ${{ github.ref_name }}" \
+            --draft \
+            --generate-notes \
+            ${IS_PRERELEASE:+--prerelease}
+          echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
 
   build-windows:
     name: Build Windows
@@ -53,14 +60,13 @@ jobs:
       - name: Build Tauri (Windows)
         run: npx tauri build --target x86_64-pc-windows-msvc
       - name: Upload Windows Installer
-        uses: softprops/action-gh-release@v2
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          files: |
-            src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe
-            src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi/*.msi
+        run: |
+          gh release upload "${{ needs.create-release.outputs.tag }}" \
+            src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe \
+            src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi/*.msi \
+            --clobber
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
 
   build-macos:
     name: Build macOS
@@ -92,12 +98,12 @@ jobs:
       - name: Build Tauri (macOS)
         run: npx tauri build --target ${{ matrix.target }}
       - name: Upload macOS DMG
-        uses: softprops/action-gh-release@v2
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          files: src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
+        run: |
+          gh release upload "${{ needs.create-release.outputs.tag }}" \
+            src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg \
+            --clobber
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
 
   build-linux:
     name: Build Linux
@@ -133,12 +139,11 @@ jobs:
       - name: Build Tauri (Linux)
         run: npx tauri build --target ${{ matrix.target }}
       - name: Upload Linux Artifacts
-        uses: softprops/action-gh-release@v2
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          files: |
-            src-tauri/target/${{ matrix.target }}/release/bundle/appimage/*.AppImage
-            src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb
-            src-tauri/target/${{ matrix.target }}/release/bundle/rpm/*.rpm
+        run: |
+          gh release upload "${{ needs.create-release.outputs.tag }}" \
+            src-tauri/target/${{ matrix.target }}/release/bundle/appimage/*.AppImage \
+            src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb \
+            src-tauri/target/${{ matrix.target }}/release/bundle/rpm/*.rpm \
+            --clobber
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
