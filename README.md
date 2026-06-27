@@ -40,7 +40,7 @@
 ### 🎬 See It In Action
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="MCP Fusion Canvas Demo" width="600" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="MCP Fusion Canvas Demo" width="700" />
   <br/>
   <em>Visual canvas editor — drag, connect, and execute AI tool workflows</em>
 </p>
@@ -48,19 +48,19 @@
 ### 🎥 Quick Demos
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="Workflow Canvas Demo" width="600" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="Workflow Canvas Demo" width="700" />
   <br/>
   <em>1. Visual canvas — drag, connect, and execute AI tool workflows</em>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.gif" alt="LLM Intent Parsing Demo" width="600" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.gif" alt="LLM Intent Parsing Demo" width="700" />
   <br/>
   <em>2. Natural language → auto-generated workflow with AI</em>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.gif" alt="Multi-view Navigation Demo" width="600" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.gif" alt="Multi-view Navigation Demo" width="700" />
   <br/>
   <em>3. Seamless multi-view navigation and real-time execution</em>
 </p>
