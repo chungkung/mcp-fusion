@@ -52,7 +52,7 @@ const CanvasNode: FC<NodeProps> = ({ id, data, selected }) => {
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             className={cn(
-                "relative rounded-xl border-2 shadow-lg cursor-pointer transition-shadow duration-200 min-w-[180px]",
+                "relative rounded-xl border-2 shadow-lg cursor-grab transition-shadow duration-200 min-w-[180px]",
                 STATUS_COLORS[status],
                 selected
                     ? "ring-2 ring-primary ring-offset-2 ring-offset-background shadow-xl"

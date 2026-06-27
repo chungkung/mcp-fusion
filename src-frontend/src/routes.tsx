@@ -30,17 +30,19 @@ const RouteLayout: FC = () => {
     const location = useLocation();
 
     return (
-        <AnimatePresence mode="wait">
-            <Suspense
-                fallback={
-                    <div className="flex items-center justify-center h-full">
-                        <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-muted border-t-primary" />
-                    </div>
-                }
-            >
-                <Outlet key={location.pathname} />
-            </Suspense>
-        </AnimatePresence>
+        <div className="flex-1 min-h-0 flex flex-col">
+            <AnimatePresence mode="wait">
+                <Suspense
+                    fallback={
+                        <div className="flex items-center justify-center flex-1">
+                            <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-muted border-t-primary" />
+                        </div>
+                    }
+                >
+                    <Outlet key={location.pathname} />
+                </Suspense>
+            </AnimatePresence>
+        </div>
     );
 };
 

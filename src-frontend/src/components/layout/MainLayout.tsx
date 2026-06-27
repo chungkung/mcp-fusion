@@ -268,7 +268,7 @@ const MainLayout: FC = () => {
             {/* 右侧：顶部栏 + 内容区域 */}
             <div className="flex-1 flex flex-col min-w-0">
                 <TopBar />
-                <main className="flex-1 overflow-auto relative">
+                <main className="flex-1 overflow-hidden relative flex flex-col">
                     <Outlet />
                 </main>
             </div>

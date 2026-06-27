@@ -455,8 +455,8 @@ const CanvasMode: FC = () => {
     const nodeCount = nodes.length;
 
     return (
-        <PageTransition className="relative h-full w-full">
-            <div className="flex flex-col h-full">
+        <PageTransition className="relative flex-1 min-h-0 w-full flex flex-col">
+            <div className="flex flex-col flex-1 min-h-0">
                 {/* 顶部工具栏 */}
                 <Toolbar
                     nodes={nodes}
@@ -475,16 +475,14 @@ const CanvasMode: FC = () => {
                 {/* 三栏布局 */}
                 <div className="flex-1 flex min-h-0">
                     {/* 左侧工具面板 */}
-                    <div className="w-56 border-r border-border bg-background shrink-0">
+                    <div className="w-56 border-r border-border bg-background overflow-hidden">
                         <ToolPanel />
                     </div>
 
                     {/* 中间画布 */}
                     <div
                         ref={reactFlowWrapper}
-                        className="flex-1 relative"
-                        onDragOver={onDragOver}
-                        onDrop={onDrop}
+                        className="flex-1 min-w-0 relative"
                     >
                         <ReactFlow
                             nodes={nodes}
@@ -496,6 +494,8 @@ const CanvasMode: FC = () => {
                             onPaneClick={onPaneClick}
                             onNodesDelete={onNodesDelete}
                             onInit={onInit}
+                            onDragOver={onDragOver}
+                            onDrop={onDrop}
                             nodeTypes={nodeTypes}
                             edgeTypes={edgeTypes}
                             fitView

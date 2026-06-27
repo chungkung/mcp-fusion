@@ -131,13 +131,14 @@ const AnimatedNode: FC<NodeProps> = ({ data, selected }) => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            whileHover={{ scale: 1.04, boxShadow: "0 8px 30px rgba(0,0,0,0.12)" }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             className={cn(
                 // 基础样式：毛玻璃卡片
                 "relative rounded-xl border-2 shadow-lg",
                 "transition-shadow duration-300",
                 "min-w-[200px] max-w-[280px]",
+                // 悬停效果（CSS 替代 framer-motion whileHover，避免干扰 ReactFlow 拖拽）
+                "hover:shadow-xl hover:border-primary/30",
                 // 状态样式
                 statusCardStyles[status],
                 // 选中高亮
