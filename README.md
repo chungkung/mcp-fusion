@@ -1,133 +1,143 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mcp-fusion/mcp-fusion/main/docs/assets/logo.png" alt="MCP Fusion Logo" width="200" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/logo.jpg">
+    <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/logo.jpg" alt="MCP Fusion Logo" width="180" />
+  </picture>
 </p>
 
 <h1 align="center">MCP Fusion</h1>
 
 <p align="center">
-  <strong>Visual Orchestration Desktop App for the MCP Ecosystem</strong>
+  <strong>Build, Run &amp; Monitor AI Tool Workflows — Visually. Locally. Effortlessly.</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/mcp-fusion/mcp-fusion/actions"><img src="https://github.com/mcp-fusion/mcp-fusion/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/mcp-fusion/mcp-fusion/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg" alt="License" /></a>
-  <a href="https://github.com/mcp-fusion/mcp-fusion/releases"><img src="https://img.shields.io/github/v/release/mcp-fusion/mcp-fusion" alt="Release" /></a>
-  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen" alt="Platform" />
-  <img src="https://img.shields.io/badge/rust-1.77%2B-orange" alt="Rust" />
+  <a href="https://github.com/chungkung/mcp-fusion/actions/workflows/ci.yml"><img src="https://github.com/chungkung/mcp-fusion/actions/workflows/ci.yml/badge.svg" alt="CI Status" /></a>
+  <a href="https://github.com/chungkung/mcp-fusion/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg" alt="License: AGPL-3.0" /></a>
+  <a href="https://github.com/chungkung/mcp-fusion/releases"><img src="https://img.shields.io/github/v/release/chungkung/mcp-fusion?color=teal" alt="Latest Release" /></a>
+  <a href="https://github.com/chungkung/mcp-fusion/releases"><img src="https://img.shields.io/github/downloads/chungkung/mcp-fusion/total?color=blue" alt="Downloads" /></a>
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen" alt="Platform: Windows | macOS | Linux" />
+  <img src="https://img.shields.io/badge/rust-1.77%2B-orange" alt="Rust: 1.77+" />
 </p>
 
 <p align="center">
   <a href="README_zh.md">中文文档</a> ·
-  <a href="#quick-start">Quick Start</a> ·
-  <a href="https://mcp-fusion.app/docs">Documentation</a> ·
-  <a href="#architecture">Architecture</a>
+  <a href="#-quick-start">Quick Start</a> ·
+  <a href="#-features">Features</a> ·
+  <a href="#-architecture">Architecture</a> ·
+  <a href="https://github.com/chungkung/mcp-fusion/releases">Download</a> ·
+  <a href="#-contributing">Contributing</a>
 </p>
 
 ---
 
 ## What is MCP Fusion?
 
-**MCP Fusion** is a **desktop-native visual orchestration platform** for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io). It lets you compose, execute, and monitor multi-tool workflows across MCP servers — all from a local desktop app with zero cloud dependencies.
+**MCP Fusion** is a cross-platform desktop application that brings **visual workflow orchestration** to the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) ecosystem. Drag, connect, and execute AI tool workflows — all running 100% on your machine, with zero cloud dependencies.
 
-> Think **n8n-level orchestration**, **Dify-level intelligence**, running **100% locally** on your machine.
+> Think **n8n** for AI toolchains. Think **Dify** for MCP servers. Running **entirely offline** on your desktop.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mcp-fusion/mcp-fusion/main/docs/assets/screenshot-canvas.png" alt="Canvas Mode" width="80%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas.jpg" alt="MCP Fusion Canvas Mode" width="90%" />
 </p>
 
 ---
 
-## Why MCP Fusion?
+## ✨ Why MCP Fusion?
 
-| Feature | MCP Fusion | n8n | Dify | LangChain |
-|---------|-----------|-----|------|-----------|
-| **Native MCP Protocol** | ✅ Full stdio/SSE/HTTP | ❌ | ❌ | ❌ (via lib) |
+| Capability | MCP Fusion | n8n | Dify | LangChain |
+|-----------|-----------|-----|------|-----------|
+| **Native MCP Protocol** | ✅ Full (stdio/SSE/HTTP) | ❌ | ❌ | ❌ (via lib) |
 | **Desktop App** | ✅ Tauri (Rust) | ❌ Web only | ❌ Web only | ❌ |
 | **Visual Canvas** | ✅ React Flow | ✅ | ✅ | ❌ |
-| **LLM Intent Parsing** | ✅ OpenAI/Local | ❌ | ✅ | ❌ |
+| **LLM Intent Parsing** | ✅ OpenAI / Local | ❌ | ✅ | ❌ |
 | **Distributed Tracing** | ✅ OpenTelemetry | ❌ | ❌ | ✅ |
 | **Offline-First** | ✅ Local SQLite | ❌ | ❌ | ❌ |
-| **Plugin Marketplace** | ✅ GitHub/GitLab | ✅ | ❌ | ❌ |
-| **Cross-Platform** | ✅ Win/Mac/Linux | ✅ Web | ✅ Web | ❌ |
+| **Plugin Marketplace** | ✅ GitHub / GitLab | ✅ | ❌ | ❌ |
+| **Cross-Platform** | ✅ Win / Mac / Linux | ✅ Web | ✅ Web | ❌ |
+| **Multi-Transport** | ✅ 3 protocols | ❌ | ❌ | ❌ |
+| **Auto-Update** | ✅ Built-in | ❌ | ❌ | ❌ |
 
 ---
 
-## Core Features
+## 🚀 Features
 
-### Visual Workflow Orchestration
-- **Drag-and-drop canvas** with React Flow for intuitive workflow design
-- **Code mode** for power users who prefer JSON/YAML editing
-- Real-time node state visualization during execution
+### 🎨 Visual Workflow Orchestration
+- **Drag-and-drop canvas** powered by React Flow — no code required
+- **Code mode** with JSON/YAML editing for power users
+- **Real-time node state visualization** during execution with live status indicators
+- **Undo/Redo** with full history tracking
 
-### MCP Protocol Fusion
-- Supports all three MCP transport protocols: **stdio**, **SSE**, and **Streamable HTTP**
-- Connect to any MCP-compatible server (Filesystem, GitHub, Postgres, Brave Search, etc.)
-- Automatic tool discovery and schema introspection
+### 🔗 MCP Protocol Fusion
+- **All three transports** supported natively: `stdio`, `SSE`, `Streamable HTTP`
+- **Auto-discovery** of tools and schemas from any MCP-compatible server
+- **Multi-server orchestration** across Filesystem, GitHub, Postgres, Brave Search, and more
+- **Hot-reload** server configurations without restarting
 
-### LLM-Powered Intent Engine
-- **Natural language → Workflow** conversion via OpenAI-compatible APIs
-- **Multi-turn conversation** refinement for iterative workflow building
-- **Automatic tool recommendation** based on task description
-- Offline fallback to keyword matching when no LLM is configured
+### 🧠 LLM-Powered Intent Engine
+- **Natural language → workflow** in seconds via OpenAI-compatible APIs
+- **Multi-turn conversation refinement** for iterative workflow design
+- **Smart tool recommendation** based on task descriptions
+- **Offline fallback** to keyword matching when no LLM is configured
 
-### Production-Grade Runtime
-- **Topological sort scheduler** with parallel execution support
-- **Circuit breaker** pattern for fault isolation
-- **Rate limiter** to prevent API abuse
-- **Idempotency keys** for safe retries
-- **Audit trail** with cryptographic chain verification
+### ⚡ Production-Grade Runtime
+- **Topological sort scheduler** with parallel execution
+- **Circuit breaker** pattern for fault isolation and graceful degradation
+- **Rate limiter** to prevent upstream API abuse
+- **Idempotency keys** for safe, repeatable execution
+- **Retry with exponential backoff** for transient failures
 
-### Observability Built-In
-- **Prometheus metrics** (workflow execution, tool calls, server status)
-- **OpenTelemetry distributed tracing** (OTLP export to Jaeger/Tempo)
+### 📊 Built-in Observability
+- **Prometheus metrics** — workflow duration, tool calls, server health
+- **OpenTelemetry tracing** — export to Jaeger, Tempo, or any OTLP backend
 - **Structured JSON logging** with tracing-subscriber
-- Real-time execution monitoring dashboard
+- **Live execution dashboard** with real-time metrics
 
-### Plugin Marketplace
-- **Remote template registry** (GitHub/GitLab integration)
-- **One-click install** from marketplace to local workflow
+### 🧩 Plugin Marketplace
+- **One-click install** templates from GitHub / GitLab
 - **Version management** with update notifications
-- **8 built-in templates** for offline use
+- **8 built-in templates** for offline bootstrap
+- **Community-driven** template sharing
 
-### Security & Compliance
-- **RBAC** (Admin / Developer / Viewer roles)
-- **API Key authentication** with encrypted storage (AES-256-GCM)
-- **Database encryption** for sensitive server configurations
-- **Audit log** with tamper-evident chain verification
+### 🔒 Security & Compliance
+- **RBAC** — Admin, Developer, Viewer roles
+- **API Key encryption** with AES-256-GCM
+- **Database encryption** for sensitive configurations
+- **Tamper-evident audit trail** with cryptographic chain verification
 
 ---
 
-## Quick Start
+## 📦 Quick Start
 
 ### Prerequisites
-- **Node.js** >= 20
-- **Rust** >= 1.77
-- **Windows** / **macOS** / **Linux**
 
-### Install from Release
+| Requirement | Version |
+|------------|---------|
+| **Node.js** | ≥ 20 |
+| **Rust** | ≥ 1.77 |
+| **OS** | Windows 10+ / macOS 11+ / Linux |
 
-Download the latest installer from [Releases](https://github.com/mcp-fusion/mcp-fusion/releases):
+### Download
 
-| Platform | Format |
-|----------|--------|
-| Windows | `.msi` / `.exe` (NSIS) |
-| macOS | `.dmg` (Apple Silicon / Intel) |
-| Linux | `.AppImage` / `.deb` / `.rpm` |
+| Platform | Package |
+|----------|---------|
+| **Windows** | `.msi` / `.exe` (NSIS installer) |
+| **macOS** | `.dmg` (Apple Silicon · Intel) |
+| **Linux** | `.AppImage` · `.deb` · `.rpm` |
+
+👉 [**Download Latest Release**](https://github.com/chungkung/mcp-fusion/releases)
 
 ### Build from Source
 
 ```bash
-# Clone the repository
-git clone https://github.com/mcp-fusion/mcp-fusion.git
+git clone https://github.com/chungkung/mcp-fusion.git
 cd mcp-fusion
-
-# Install dependencies
 npm install
 
-# Build and run in development mode
+# Development
 npm run tauri:dev
 
-# Build for production
+# Production build
 npm run build:win    # Windows
 npm run build:mac    # macOS
 npm run build:linux  # Linux
@@ -136,71 +146,73 @@ npm run build:linux  # Linux
 ### Configure LLM (Optional)
 
 ```bash
-# Set environment variables for LLM-powered intent parsing
-export LLM_API_KEY="sk-your-openai-api-key"
+# OpenAI / compatible API
+export LLM_API_KEY="sk-your-api-key"
 export LLM_MODEL="gpt-4o-mini"
 
-# Or use a local model via Ollama
+# Local model via Ollama
 export LLM_API_URL="http://localhost:11434/v1/chat/completions"
 export LLM_MODEL="qwen2.5:7b"
 ```
 
 ---
 
-## Architecture
+## 🏗 Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    MCP Fusion Desktop                    │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │              Frontend (React + TypeScript)         │  │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────────────┐  │  │
-│  │  │ Intent   │ │ Canvas   │ │ Marketplace      │  │  │
-│  │  │ Parser   │ │ Editor   │ │ Browser          │  │  │
-│  │  └──────────┘ └──────────┘ └──────────────────┘  │  │
-│  └───────────────────┬───────────────────────────────┘  │
-│                      │ IPC (Tauri Bridge)                │
-│  ┌───────────────────┴───────────────────────────────┐  │
-│  │              Backend (Rust + Tauri)                │  │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────────────┐  │  │
-│  │  │ LLM      │ │ Scheduler│ │ Gateway          │  │  │
-│  │  │ Engine   │ │ (Topo)   │ │ (stdio/SSE/HTTP) │  │  │
-│  │  └──────────┘ └──────────┘ └──────────────────┘  │  │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────────────┐  │  │
-│  │  │ Metrics  │ │ Tracing  │ │ Marketplace      │  │  │
-│  │  │ (Prom)   │ │ (OTel)   │ │ (GitHub/GitLab)  │  │  │
-│  │  └──────────┘ └──────────┘ └──────────────────┘  │  │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────────────┐  │  │
-│  │  │ Auth     │ │ Circuit  │ │ Rate             │  │  │
-│  │  │ (RBAC)   │ │ Breaker  │ │ Limiter          │  │  │
-│  │  └──────────┘ └──────────┘ └──────────────────┘  │  │
-│  │  ┌──────────────────────────────────────────────┐ │  │
-│  │  │           SQLite (Local Storage)             │ │  │
-│  │  └──────────────────────────────────────────────┘ │  │
-│  └───────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                      MCP Fusion Desktop                         │
+│                                                                 │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │                   Frontend (React + TypeScript)            │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌───────────────────────┐   │  │
+│  │  │ Intent   │  │ Canvas   │  │ Marketplace           │   │  │
+│  │  │ Parser   │  │ Editor   │  │ Browser               │   │  │
+│  │  └──────────┘  └──────────┘  └───────────────────────┘   │  │
+│  └───────────────────────┬───────────────────────────────────┘  │
+│                          │  IPC (Tauri Bridge)                  │
+│  ┌───────────────────────┴───────────────────────────────────┐  │
+│  │                    Backend (Rust + Tauri)                  │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌───────────────────────┐   │  │
+│  │  │ LLM      │  │ Scheduler│  │ Gateway               │   │  │
+│  │  │ Engine   │  │ (Topo)   │  │ (stdio / SSE / HTTP)  │   │  │
+│  │  └──────────┘  └──────────┘  └───────────────────────┘   │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌───────────────────────┐   │  │
+│  │  │ Metrics  │  │ Tracing  │  │ Marketplace           │   │  │
+│  │  │ (Prom)   │  │ (OTel)   │  │ (GitHub / GitLab)     │   │  │
+│  │  └──────────┘  └──────────┘  └───────────────────────┘   │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌───────────────────────┐   │  │
+│  │  │ Auth     │  │ Circuit  │  │ Rate                  │   │  │
+│  │  │ (RBAC)   │  │ Breaker  │  │ Limiter               │   │  │
+│  │  └──────────┘  └──────────┘  └───────────────────────┘   │  │
+│  │  ┌───────────────────────────────────────────────────┐   │  │
+│  │  │              SQLite (Local Storage)                │   │  │
+│  │  └───────────────────────────────────────────────────┘   │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Tech Stack
+## 🛠 Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Desktop Framework** | [Tauri 2](https://tauri.app) (Rust) |
-| **Frontend** | React 18, TypeScript, Tailwind CSS |
-| **Canvas Editor** | [React Flow](https://reactflow.dev) (xyflow) |
-| **State Management** | [Zustand](https://zustand-demo.pmnd.rs) |
-| **Animations** | [Framer Motion](https://www.framer.com/motion/) |
-| **Database** | SQLite (via [rusqlite](https://github.com/rusqlite/rusqlite)) |
-| **Metrics** | [Prometheus](https://prometheus.io) (rust client) |
-| **Tracing** | [OpenTelemetry](https://opentelemetry.io) (OTLP) |
-| **Encryption** | AES-256-GCM |
-| **LLM** | OpenAI-compatible API |
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| **Desktop Shell** | [Tauri 2](https://tauri.app) | Lightweight, Rust-powered, cross-platform |
+| **UI Framework** | React 18 + TypeScript | Type-safe, mature ecosystem |
+| **Styling** | Tailwind CSS | Utility-first, rapid iteration |
+| **Canvas** | [React Flow](https://reactflow.dev) | Battle-tested node editor |
+| **State** | [Zustand](https://zustand-demo.pmnd.rs) | Minimal boilerplate |
+| **Animation** | [Framer Motion](https://www.framer.com/motion/) | Declarative, performant |
+| **Database** | SQLite via [rusqlite](https://github.com/rusqlite/rusqlite) | Zero-config, embedded |
+| **Metrics** | [Prometheus](https://prometheus.io) (rust) | Industry standard |
+| **Tracing** | [OpenTelemetry](https://opentelemetry.io) | OTLP export |
+| **Encryption** | AES-256-GCM | Military-grade |
+| **LLM** | OpenAI-compatible API | Broad model support |
 
 ---
 
-## Example: 3-Node API Aggregation Workflow
+## 📝 Example: 3-Node Aggregation Workflow
 
 ```json
 {
@@ -232,62 +244,65 @@ export LLM_MODEL="qwen2.5:7b"
 }
 ```
 
-Or describe it in natural language and let the LLM generate it:
+Or just describe it in natural language:
 
 > *"Fetch weather data from one API and stock data from another, then merge both results into a single report."*
 
 ---
 
-## Roadmap
+## 🗺 Roadmap
 
-- [x] MCP stdio/SSE/Streamable HTTP transport
+- [x] MCP stdio / SSE / Streamable HTTP transport
 - [x] Visual canvas editor (React Flow)
 - [x] LLM-powered intent parsing
-- [x] Plugin marketplace (GitHub/GitLab)
+- [x] Plugin marketplace (GitHub / GitLab)
 - [x] OpenTelemetry distributed tracing
 - [x] Prometheus metrics
 - [x] Circuit breaker & rate limiter
 - [x] RBAC & API key authentication
-- [x] Cross-platform packaging (Windows/macOS/Linux)
+- [x] Cross-platform packaging (Windows / macOS / Linux)
 - [x] Auto-update (Tauri updater)
 - [ ] MCP Resource & Prompt support
 - [ ] WebSocket transport
-- [ ] Team collaboration (real-time)
-- [ ] Cloud sync (Pro feature)
+- [ ] Real-time team collaboration
+- [ ] Cloud sync (Pro)
 - [ ] Mobile companion app
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+We welcome contributions of all kinds — code, docs, templates, bug reports, and feature ideas!
 
-- **Good First Issues**: [Issues labeled `good first issue`](https://github.com/mcp-fusion/mcp-fusion/labels/good%20first%20issue)
-- **Discord**: [Join our community](https://discord.gg/mcp-fusion)
-
----
-
-## License
-
-MCP Fusion is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
-
-- **Open source use**: Free for personal, academic, and open source projects
-- **Commercial use**: Requires a commercial license. [Contact us](mailto:license@mcp-fusion.app) for details.
-
-See [LICENSE](LICENSE) for the full text.
+- 📖 **[CONTRIBUTING.md](CONTRIBUTING.md)** — guidelines and workflow
+- 🐛 **[Good First Issues](https://github.com/chungkung/mcp-fusion/labels/good%20first%20issue)** — beginner-friendly tasks
+- 💬 **[Discord](https://discord.gg/mcp-fusion)** — join our community
 
 ---
 
-## Star History
+## 📄 License
+
+MCP Fusion is licensed under **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+| Use Case | License |
+|----------|---------|
+| Personal, academic, open source | ✅ Free (AGPL-3.0) |
+| Commercial / proprietary | 🔑 [Contact us](mailto:license@mcp-fusion.app) |
+
+See [LICENSE](LICENSE) for full terms.
+
+---
+
+## ⭐ Star History
 
 <p align="center">
-  <a href="https://star-history.com/#mcp-fusion/mcp-fusion&Date">
-    <img src="https://api.star-history.com/svg?repos=mcp-fusion/mcp-fusion&type=Date" alt="Star History Chart" width="80%" />
+  <a href="https://star-history.com/#chungkung/mcp-fusion&Date">
+    <img src="https://api.star-history.com/svg?repos=chungkung/mcp-fusion&type=Date" alt="Star History" width="80%" />
   </a>
 </p>
 
 ---
 
 <p align="center">
-  Made with ❤️ by the MCP Fusion team
+  <sub>Built with Rust, TypeScript, and love by the MCP Fusion team</sub>
 </p>
