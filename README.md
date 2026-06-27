@@ -40,7 +40,7 @@
 ### 🎬 See It In Action
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="MCP Fusion Canvas Demo" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="MCP Fusion Canvas Demo" width="600" />
   <br/>
   <em>Visual canvas editor — drag, connect, and execute AI tool workflows</em>
 </p>
@@ -48,19 +48,19 @@
 ### 🎥 Quick Demos
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="Workflow Canvas Demo" width="80%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="Workflow Canvas Demo" width="600" />
   <br/>
   <em>1. Visual canvas — drag, connect, and execute AI tool workflows</em>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.gif" alt="LLM Intent Parsing Demo" width="80%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.gif" alt="LLM Intent Parsing Demo" width="600" />
   <br/>
   <em>2. Natural language → auto-generated workflow with AI</em>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.gif" alt="Multi-view Navigation Demo" width="80%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.gif" alt="Multi-view Navigation Demo" width="600" />
   <br/>
   <em>3. Seamless multi-view navigation and real-time execution</em>
 </p>
@@ -99,7 +99,7 @@ Design complex AI tool pipelines without writing a single line of code. The canv
 - **Auto-layout** — smart node positioning for clean workflow diagrams
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas-real.png" alt="Visual Canvas Editor" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas-real.png" alt="Visual Canvas Editor" width="442" />
 </p>
 
 ### 🧠 LLM-Powered Intent Engine
@@ -113,7 +113,7 @@ Describe what you want in natural language, and MCP Fusion builds the workflow f
 - **Supports**: OpenAI, Azure OpenAI, Ollama, LM Studio, vLLM, and any OpenAI-compatible endpoint
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent-real.png" alt="LLM Intent Parsing" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent-real.png" alt="LLM Intent Parsing" width="442" />
   <br/>
   <em>Describe your workflow in natural language — the AI generates nodes and edges automatically</em>
 </p>
@@ -150,7 +150,7 @@ Understand exactly what your workflows are doing with production-grade monitorin
 - **Live execution dashboard** — real-time metrics and span visualization
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-metrics.jpg" alt="Metrics & Tracing Dashboard" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-metrics.jpg" alt="Metrics & Tracing Dashboard" width="600" />
   <br/>
   <em>Real-time metrics, distributed tracing, and server health monitoring</em>
 </p>
@@ -165,7 +165,7 @@ Discover, install, and share workflow templates — all from within the app.
 - **Community-driven** — share your templates and discover others' creations
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace-real.png" alt="Plugin Marketplace" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace-real.png" alt="Plugin Marketplace" width="442" />
   <br/>
   <em>Browse, install, and manage workflow templates from the community</em>
 </p>
@@ -404,7 +404,7 @@ See [LICENSE](LICENSE) for full terms.
 
 <p align="center">
   <a href="https://star-history.com/#chungkung/mcp-fusion&Date">
-    <img src="https://api.star-history.com/svg?repos=chungkung/mcp-fusion&type=Date" alt="Star History" width="80%" />
+    <img src="https://api.star-history.com/svg?repos=chungkung/mcp-fusion&type=Date" alt="Star History" width="600" />
   </a>
 </p>
 
