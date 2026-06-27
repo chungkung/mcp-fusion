@@ -28,7 +28,6 @@ jobs:
           fi
           gh release create "${{ github.ref_name }}" \
             --title "MCP Fusion ${{ github.ref_name }}" \
-            --draft \
             --generate-notes \
             ${IS_PRERELEASE:+--prerelease}
           echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
