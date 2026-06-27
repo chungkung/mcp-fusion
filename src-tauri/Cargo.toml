@@ -36,7 +36,7 @@ hex = "0.4"
 aes-gcm = "0.10"
 base64 = "0.22"
 rand = "0.8"
-reqwest = { version = "0.12", features = ["stream", "json"] }
+reqwest = { version = "0.13", features = ["stream", "json"] }
 prometheus = { version = "0.13", features = ["process"] }
 lazy_static = "1.4"
 opentelemetry = { version = "0.24", features = ["trace"] }
