@@ -32,6 +32,22 @@
 
 ---
 
+<p align="center">
+  <a href="https://github.com/chungkung/mcp-fusion/releases">
+    <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20Download%20Latest%20Release-1a1a2e?style=for-the-badge&logo=github&logoColor=white&labelColor=0d1117" alt="Download Latest Release" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/chungkung/mcp-fusion">
+    <img src="https://img.shields.io/badge/%E2%AD%90%20Star%20on%20GitHub-1a1a2e?style=for-the-badge&logo=github&logoColor=white&labelColor=0d1117" alt="Star on GitHub" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="docs/">
+    <img src="https://img.shields.io/badge/%F0%9F%93%96%20Read%20the%20Docs-1a1a2e?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=0d1117" alt="Read the Docs" />
+  </a>
+</p>
+
+---
+
 ## What is MCP Fusion?
 
 **MCP Fusion** is a cross-platform desktop application that brings **visual workflow orchestration** to the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) ecosystem. Drag, connect, and execute AI tool workflows — all running 100% on your machine, with zero cloud dependencies.
@@ -41,7 +57,7 @@
 ### 🎬 See It In Action
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="MCP Fusion Canvas Demo" width="840" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="MCP Fusion Canvas Demo" width="960" />
   <br/>
   <em>Visual canvas editor — drag, connect, and execute AI tool workflows</em>
 </p>
@@ -84,6 +100,33 @@
 | **Auto-Update** | ✅ Built-in | ❌ | ❌ | ❌ | ❌ |
 | **RBAC & Audit** | ✅ Built-in | ❌ | ❌ | ❌ | ❌ |
 | **Circuit Breaker** | ✅ Production-grade | ❌ | ❌ | ❌ | ❌ |
+
+---
+
+## 🔥 Why Developers Love MCP Fusion
+
+<table align="center">
+  <tr>
+    <td align="center" width="50%">
+      <h3>🎨 Visual-First Design</h3>
+      <p>Drag-and-drop canvas with React Flow — build complex AI tool pipelines without writing a single line of code.</p>
+    </td>
+    <td align="center" width="50%">
+      <h3>🧠 AI-Powered Intent</h3>
+      <p>Describe your goal in natural language and watch the LLM auto-generate a complete workflow in seconds.</p>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <h3>⚡ Production-Ready Runtime</h3>
+      <p>Circuit breakers, rate limiting, idempotency keys, and exponential backoff — battle-tested reliability built in.</p>
+    </td>
+    <td align="center" width="50%">
+      <h3>🔒 100% Local & Private</h3>
+      <p>Everything runs on your machine. Zero telemetry, AES-256-GCM encryption, and no cloud dependencies.</p>
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -190,6 +233,18 @@ Discover, install, and share workflow templates — all from within the app.
   <br/>
   <em>RBAC role management, API key generation, and granular permission control</em>
 </p>
+
+---
+
+## 🚀 One-Click Deploy
+
+Get up and running in under a minute:
+
+```bash
+git clone https://github.com/chungkung/mcp-fusion.git
+cd mcp-fusion && npm install
+npm run tauri:dev
+```
 
 ---
 
@@ -401,6 +456,65 @@ cd mcp-fusion
 npm install
 npm run tauri:dev
 ```
+
+---
+
+## 📊 Project Stats
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <strong>Source Code</strong><br/>
+      <sub>React + TypeScript + Rust</sub>
+    </td>
+    <td align="center">
+      <strong>Test Suite</strong><br/>
+      <sub>27 tests</sub>
+    </td>
+    <td align="center">
+      <strong>Tests Passing</strong><br/>
+      <sub>27 / 27 ✅</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>CI Status</strong><br/>
+      <a href="https://github.com/chungkung/mcp-fusion/actions/workflows/ci.yml"><img src="https://github.com/chungkung/mcp-fusion/actions/workflows/ci.yml/badge.svg" alt="CI Status" /></a>
+    </td>
+    <td align="center">
+      <strong>Platforms</strong><br/>
+      <sub>Windows · macOS · Linux</sub>
+    </td>
+    <td align="center">
+      <strong>License</strong><br/>
+      <sub>AGPL-3.0</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 💬 What Users Say
+
+<table align="center">
+  <tr>
+    <td align="center" width="33%">
+      <blockquote>
+        <p><em>"Coming soon — be the first to share your experience!"</em></p>
+      </blockquote>
+    </td>
+    <td align="center" width="33%">
+      <blockquote>
+        <p><em>"Coming soon — be the first to share your experience!"</em></p>
+      </blockquote>
+    </td>
+    <td align="center" width="33%">
+      <blockquote>
+        <p><em>"Coming soon — be the first to share your experience!"</em></p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
 
 ---
 

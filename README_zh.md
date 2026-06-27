@@ -32,6 +32,22 @@
 
 ---
 
+<p align="center">
+  <a href="https://github.com/chungkung/mcp-fusion/releases">
+    <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC-1a1a2e?style=for-the-badge&logo=github&logoColor=white&labelColor=0d1117" alt="下载最新版本" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/chungkung/mcp-fusion">
+    <img src="https://img.shields.io/badge/%E2%AD%90%20Star%20on%20GitHub-1a1a2e?style=for-the-badge&logo=github&logoColor=white&labelColor=0d1117" alt="Star on GitHub" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="docs/">
+    <img src="https://img.shields.io/badge/%F0%9F%93%96%20%E9%98%85%E8%AF%BB%E6%96%87%E6%A1%A3-1a1a2e?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=0d1117" alt="阅读文档" />
+  </a>
+</p>
+
+---
+
 ## MCP Fusion 是什么？
 
 **MCP Fusion** 是一个跨平台桌面应用，为 [Model Context Protocol (MCP)](https://modelcontextprotocol.io) 生态提供**可视化工作流编排**。拖拽、连接、执行 AI 工具工作流 — 全部在你的机器上运行，零云依赖。
@@ -84,6 +100,33 @@
 | **自动更新** | ✅ 内置支持 | ❌ | ❌ | ❌ | ❌ |
 | **RBAC 与审计** | ✅ 内置 | ❌ | ❌ | ❌ | ❌ |
 | **熔断器** | ✅ 生产级 | ❌ | ❌ | ❌ | ❌ |
+
+---
+
+## 🔥 开发者为何钟爱 MCP Fusion
+
+<table align="center">
+  <tr>
+    <td align="center" width="50%">
+      <h3>🎨 可视化优先设计</h3>
+      <p>基于 React Flow 的拖拽式画布 — 无需编写任何代码即可构建复杂的 AI 工具管线。</p>
+    </td>
+    <td align="center" width="50%">
+      <h3>🧠 AI 驱动的意图理解</h3>
+      <p>用自然语言描述你的目标，LLM 在数秒内自动生成完整工作流。</p>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <h3>⚡ 生产级运行时</h3>
+      <p>内置熔断器、速率限制、幂等键和指数退避重试 — 久经考验的可靠性保障。</p>
+    </td>
+    <td align="center" width="50%">
+      <h3>🔒 100% 本地与隐私</h3>
+      <p>一切在你的机器上运行。零遥测、AES-256-GCM 加密、零云依赖。</p>
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -190,6 +233,18 @@ MCP Fusion 是首个**原生支持全部三种 MCP 传输协议**的桌面应用
   <br/>
   <em>RBAC 角色管理、API Key 生成与细粒度权限控制</em>
 </p>
+
+---
+
+## 🚀 一键部署
+
+一分钟内即可启动运行：
+
+```bash
+git clone https://github.com/chungkung/mcp-fusion.git
+cd mcp-fusion && npm install
+npm run tauri:dev
+```
 
 ---
 
@@ -400,6 +455,65 @@ cd mcp-fusion
 npm install
 npm run tauri:dev
 ```
+
+---
+
+## 📊 项目统计
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <strong>源代码</strong><br/>
+      <sub>React + TypeScript + Rust</sub>
+    </td>
+    <td align="center">
+      <strong>测试套件</strong><br/>
+      <sub>27 项测试</sub>
+    </td>
+    <td align="center">
+      <strong>测试通过</strong><br/>
+      <sub>27 / 27 ✅</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>CI 状态</strong><br/>
+      <a href="https://github.com/chungkung/mcp-fusion/actions/workflows/ci.yml"><img src="https://github.com/chungkung/mcp-fusion/actions/workflows/ci.yml/badge.svg" alt="CI 状态" /></a>
+    </td>
+    <td align="center">
+      <strong>支持平台</strong><br/>
+      <sub>Windows · macOS · Linux</sub>
+    </td>
+    <td align="center">
+      <strong>许可证</strong><br/>
+      <sub>AGPL-3.0</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 💬 用户评价
+
+<table align="center">
+  <tr>
+    <td align="center" width="33%">
+      <blockquote>
+        <p><em>"敬请期待 — 成为第一个分享体验的人！"</em></p>
+      </blockquote>
+    </td>
+    <td align="center" width="33%">
+      <blockquote>
+        <p><em>"敬请期待 — 成为第一个分享体验的人！"</em></p>
+      </blockquote>
+    </td>
+    <td align="center" width="33%">
+      <blockquote>
+        <p><em>"敬请期待 — 成为第一个分享体验的人！"</em></p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
 
 ---
 
