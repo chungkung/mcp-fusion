@@ -58,13 +58,16 @@ jobs:
       - name: Install Rust target
         run: rustup target add x86_64-pc-windows-msvc
       - name: Build Tauri (Windows)
-        run: npm run tauri:build -- --target x86_64-pc-windows-msvc --verbose
+        run: npm run tauri:build -- --target x86_64-pc-windows-msvc
       - name: Upload Windows Installer
+        shell: pwsh
         run: |
-          gh release upload "${{ needs.create-release.outputs.tag }}" \
-            src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe \
-            src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi/*.msi \
-            --clobber
+          $files = @(Get-ChildItem -Path "src-tauri/target/x86_64-pc-windows-msvc/release/bundle" -Recurse -Include "*.exe","*.msi" -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName })
+          if ($files.Count -gt 0) {
+            gh release upload "${{ needs.create-release.outputs.tag }}" $files --clobber
+          } else {
+            Write-Host "No installer files found, skipping upload"
+          }
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -96,12 +99,16 @@ jobs:
       - name: Install Rust target
         run: rustup target add ${{ matrix.target }}
       - name: Build Tauri (macOS)
-        run: npm run tauri:build -- --target ${{ matrix.target }} --verbose
+        run: npm run tauri:build -- --target ${{ matrix.target }}
       - name: Upload macOS DMG
         run: |
-          gh release upload "${{ needs.create-release.outputs.tag }}" \
-            src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg \
-            --clobber
+          shopt -s nullglob
+          files=(src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg)
+          if [ ${#files[@]} -gt 0 ]; then
+            gh release upload "${{ needs.create-release.outputs.tag }}" "${files[@]}" --clobber
+          else
+            echo "No DMG files found, skipping upload"
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -137,13 +144,17 @@ jobs:
       - name: Install Rust target
         run: rustup target add ${{ matrix.target }}
       - name: Build Tauri (Linux)
-        run: npm run tauri:build -- --target ${{ matrix.target }} --verbose
+        run: npm run tauri:build -- --target ${{ matrix.target }}
       - name: Upload Linux Artifacts
         run: |
-          gh release upload "${{ needs.create-release.outputs.tag }}" \
-            src-tauri/target/${{ matrix.target }}/release/bundle/appimage/*.AppImage \
-            src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb \
-            src-tauri/target/${{ matrix.target }}/release/bundle/rpm/*.rpm \
-            --clobber
+          shopt -s nullglob
+          files=(src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb
+                 src-tauri/target/${{ matrix.target }}/release/bundle/appimage/*.AppImage
+                 src-tauri/target/${{ matrix.target }}/release/bundle/rpm/*.rpm)
+          if [ ${#files[@]} -gt 0 ]; then
+            gh release upload "${{ needs.create-release.outputs.tag }}" "${files[@]}" --clobber
+          else
+            echo "No Linux artifacts found, skipping upload"
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
