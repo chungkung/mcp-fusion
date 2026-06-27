@@ -130,7 +130,7 @@ MCP Fusion is the first desktop app to support **all three MCP transport protoco
 - **Hot-reload** — update server configurations without restarting the app
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-mcp-config.png" alt="MCP Server Configuration" width="477" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-mcp-config.png" alt="MCP Server Configuration" width="840" />
   <br/>
   <em>Manage MCP servers with stdio / SSE / Streamable HTTP — auto-discovery and health checks</em>
 </p>
@@ -156,7 +156,7 @@ Understand exactly what your workflows are doing with production-grade monitorin
 - **Live execution dashboard** — real-time metrics and span visualization
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-metrics.jpg" alt="Metrics & Tracing Dashboard" width="600" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-metrics.jpg" alt="Metrics &amp; Tracing Dashboard" width="840" />
   <br/>
   <em>Real-time metrics, distributed tracing, and server health monitoring</em>
 </p>
@@ -171,7 +171,7 @@ Discover, install, and share workflow templates — all from within the app.
 - **Community-driven** — share your templates and discover others' creations
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace.png" alt="Plugin Marketplace" width="477" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace.png" alt="Plugin Marketplace" width="840" />
   <br/>
   <em>Browse, install, and manage workflow templates from the community</em>
 </p>
@@ -185,13 +185,13 @@ Discover, install, and share workflow templates — all from within the app.
 - **No telemetry** — zero data leaves your machine unless you configure OTLP export
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-permissions.png" alt="RBAC & API Key Management" width="477" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-permissions.png" alt="RBAC &amp; API Key Management" width="840" />
   <br/>
   <em>RBAC role management, API key generation, and granular permission control</em>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-audit.png" alt="Audit Trail" width="477" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-audit.png" alt="Audit Trail" width="840" />
   <br/>
   <em>Tamper-evident audit logs — cryptographically chained operation trail</em>
 </p>
@@ -422,7 +422,7 @@ See [LICENSE](LICENSE) for full terms.
 
 <p align="center">
   <a href="https://star-history.com/#chungkung/mcp-fusion&Date">
-    <img src="https://api.star-history.com/svg?repos=chungkung/mcp-fusion&type=Date" alt="Star History" width="600" />
+    <img src="https://api.star-history.com/svg?repos=chungkung/mcp-fusion&type=Date" alt="Star History" width="840" />
   </a>
 </p>
 

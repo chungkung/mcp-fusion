@@ -241,11 +241,11 @@ function normalizeWorkflow(raw: Record<string, any>, now: number): Workflow {
 }
 
 const languages = [
-    { id: "typescript", label: "TypeScript", ext: ".ts" },
-    { id: "javascript", label: "JavaScript", ext: ".js" },
-    { id: "python", label: "Python", ext: ".py" },
-    { id: "json", label: "JSON", ext: ".json" },
-    { id: "yaml", label: "YAML", ext: ".yaml" },
+    { id: "typescript", label: "TypeScript", ext: ".ts", available: false },
+    { id: "javascript", label: "JavaScript", ext: ".js", available: false },
+    { id: "python", label: "Python", ext: ".py", available: false },
+    { id: "json", label: "JSON", ext: ".json", available: true },
+    { id: "yaml", label: "YAML", ext: ".yaml", available: true },
 ] as const;
 
 const PLACEHOLDER_CODE: Record<string, string> = {
@@ -541,13 +541,19 @@ const CodeMode: FC = () => {
                                 key={lang.id}
                                 onClick={() => setActiveLang(lang.id)}
                                 className={cn(
-                                    "px-3 py-1 rounded-md text-xs font-medium transition-colors",
+                                    "px-3 py-1 rounded-md text-xs font-medium transition-colors relative",
                                     activeLang === lang.id
                                         ? "bg-primary/10 text-primary"
                                         : "text-muted-foreground hover:text-foreground hover:bg-accent",
                                 )}
+                                title={lang.available ? undefined : `"${lang.label}" 即将推出，当前请使用 JSON 或 YAML`}
                             >
                                 {lang.label}
+                                {!lang.available && (
+                                    <span className="ml-1.5 rounded-full bg-yellow-500/10 px-1.5 py-0.5 text-[10px] font-medium text-yellow-600 dark:text-yellow-400">
+                                        即将推出
+                                    </span>
+                                )}
                             </button>
                         ))}
                     </div>
@@ -584,7 +590,8 @@ const CodeMode: FC = () => {
 
                         <button
                             onClick={handleRun}
-                            disabled={running}
+                            disabled={running || !currentLang.available}
+                            title={!currentLang.available ? "当前语言暂不支持直接执行，请切换到 JSON 或 YAML" : undefined}
                             className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
                         >
                             <Play className={cn("h-3.5 w-3.5", running && "animate-pulse")} />
