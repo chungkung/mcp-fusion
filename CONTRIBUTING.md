@@ -37,6 +37,8 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before participating.
    # Frontend checks
    cd ../src-frontend
    npx tsc --noEmit
+   npx prettier --check "src/**/*.{ts,tsx,css,json}"
+   npx vitest run
    ```
 5. Write or update tests as needed
 6. Update documentation for any changed behavior

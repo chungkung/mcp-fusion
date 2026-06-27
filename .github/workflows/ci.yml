@@ -10,6 +10,9 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  # ============================================================
+  # Rust 后端
+  # ============================================================
   test-backend:
     name: Test (Rust)
     runs-on: windows-latest
@@ -40,7 +43,14 @@ jobs:
       - name: Cargo clippy
         run: cargo clippy --no-default-features
         working-directory: src-tauri
+      - name: Cargo audit
+        uses: rustsec/audit-check@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
+  # ============================================================
+  # 前端
+  # ============================================================
   test-frontend:
     name: Test (Frontend)
     runs-on: ubuntu-latest
@@ -52,5 +62,15 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
       - run: npm ci
-      - run: npx tsc --noEmit
+      - name: TypeScript check
+        run: npx tsc --noEmit
         working-directory: src-frontend
+      - name: Prettier check
+        run: npx prettier --check "src/**/*.{ts,tsx,css,json}"
+        working-directory: src-frontend
+      - name: Vitest
+        run: npx vitest run
+        working-directory: src-frontend
+      - name: npm audit
+        run: npm audit --audit-level=high
+        continue-on-error: true

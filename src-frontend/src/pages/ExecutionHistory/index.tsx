@@ -19,10 +19,13 @@ import {
     RefreshCw,
     ChevronLeft,
     ChevronRight,
+    ChevronDown,
+    ChevronUp,
     Filter,
     BarChart3,
     RotateCcw,
     Unlock,
+    Zap,
 } from "lucide-react";
 
 // ============================================================
@@ -69,6 +72,7 @@ const ExecutionHistory: FC = () => {
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [expandedExecutions, setExpandedExecutions] = useState<Set<string>>(new Set());
     const cancelledRef = useRef(false);
 
     // 加载工作流列表
@@ -165,8 +169,83 @@ const ExecutionHistory: FC = () => {
         }
     }, [selectedWorkflowId]);
 
+    const toggleExpand = useCallback((execId: string) => {
+        setExpandedExecutions((prev) => {
+            const next = new Set(prev);
+            if (next.has(execId)) {
+                next.delete(execId);
+            } else {
+                next.add(execId);
+            }
+            return next;
+        });
+    }, []);
+
     const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
     const selectedWorkflow = workflows.find((w) => w.id === selectedWorkflowId);
+
+    // 展开节点详情时显示节点结果
+    const renderNodeResults = (exec: WorkflowExecution) => {
+        const nodeResults = exec.nodeResults as Record<string, Record<string, unknown>> | undefined;
+        if (!nodeResults || Object.keys(nodeResults).length === 0) {
+            return (
+                <p className="text-xs text-muted-foreground/50 px-4 py-2">
+                    暂无节点执行详情
+                </p>
+            );
+        }
+        return (
+            <div className="space-y-1 px-4 py-2">
+                {Object.entries(nodeResults).map(([nodeId, result]) => {
+                    const nodeStatus = (result?.status as string) ?? "unknown";
+                    const nodeOutput = result?.output;
+                    const nodeError = result?.error as string | null;
+                    const nodeConfig = STATUS_CONFIG[nodeStatus] ?? {
+                        icon: Circle,
+                        color: "text-muted-foreground/50",
+                        label: nodeStatus,
+                    };
+                    const NodeIcon = nodeConfig.icon;
+                    return (
+                        <div
+                            key={nodeId}
+                            className="flex items-start gap-3 rounded-md bg-muted/30 px-3 py-2"
+                        >
+                            <NodeIcon
+                                className={cn(
+                                    "h-4 w-4 mt-0.5 shrink-0",
+                                    nodeConfig.color,
+                                    nodeStatus === "running" && "animate-pulse",
+                                )}
+                            />
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xs font-medium text-foreground">
+                                        节点 {nodeId.slice(0, 12)}
+                                    </span>
+                                    <span className={cn("text-[10px]", nodeConfig.color)}>
+                                        {nodeConfig.label}
+                                    </span>
+                                </div>
+                                {nodeOutput !== undefined && nodeOutput !== null && (
+                                    <pre className="mt-1 text-[10px] text-muted-foreground/70 bg-muted/50 rounded px-2 py-1 overflow-x-auto max-w-full">
+                                        {typeof nodeOutput === "string"
+                                            ? nodeOutput
+                                            : JSON.stringify(nodeOutput, null, 2)}
+                                    </pre>
+                                )}
+                                {nodeError && (
+                                    <p className="mt-1 text-[10px] text-red-500/80">
+                                        {nodeError}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    };
 
     return (
         <PageTransition className="h-full">
@@ -281,74 +360,94 @@ const ExecutionHistory: FC = () => {
                                         color: "text-muted-foreground/50",
                                         label: exec.status,
                                     };
-                                const StatusIcon = statusInfo.icon;
+                                const StatusIcon = statusInfo;
+                                const isExpanded = expandedExecutions.has(exec.id);
+                                const nodeCount = exec.nodeResults
+                                    ? Object.keys(exec.nodeResults as Record<string, unknown>).length
+                                    : 0;
                                 return (
-                                    <div
-                                        key={exec.id}
-                                        className="flex items-start gap-4 px-4 py-3 hover:bg-accent/30 transition-colors"
-                                    >
-                                        <div className="shrink-0 mt-0.5">
-                                            <StatusIcon
-                                                className={cn(
-                                                    "h-5 w-5",
-                                                    statusInfo.color,
-                                                    exec.status === "running" &&
-                                                        "animate-pulse",
+                                    <div key={exec.id}>
+                                        <div
+                                            className="flex items-start gap-4 px-4 py-3 hover:bg-accent/30 transition-colors cursor-pointer"
+                                            onClick={() => toggleExpand(exec.id)}
+                                        >
+                                            <div className="shrink-0 mt-0.5">
+                                                <StatusIcon.icon
+                                                    className={cn(
+                                                        "h-5 w-5",
+                                                        statusInfo.color,
+                                                        exec.status === "running" &&
+                                                            "animate-pulse",
+                                                    )}
+                                                />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-medium text-foreground">
+                                                        {statusInfo.label}
+                                                    </span>
+                                                    <span className="text-[10px] text-muted-foreground/40 font-mono">
+                                                        {exec.id.slice(0, 8)}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center gap-3 mt-1">
+                                                    <span className="text-xs text-muted-foreground/70 flex items-center gap-1">
+                                                        <Clock className="h-3 w-3" />
+                                                        {formatTime(exec.startedAt)}
+                                                    </span>
+                                                    <span className="text-xs text-muted-foreground/50">
+                                                        耗时: {formatDuration(exec.startedAt, exec.finishedAt)}
+                                                    </span>
+                                                    <span className="text-[10px] text-muted-foreground/40 flex items-center gap-1">
+                                                        <Zap className="h-2.5 w-2.5" />
+                                                        {nodeCount} 节点
+                                                    </span>
+                                                </div>
+                                                {exec.error && (
+                                                    <p className="text-xs text-red-500/80 mt-1 truncate">
+                                                        错误: {exec.error}
+                                                    </p>
                                                 )}
-                                            />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-medium text-foreground">
-                                                    {statusInfo.label}
-                                                </span>
-                                                <span className="text-[10px] text-muted-foreground/40 font-mono">
-                                                    {exec.id.slice(0, 8)}
+                                            </div>
+                                            <div className="shrink-0 flex items-center gap-1.5">
+                                                {(exec.status === "failed" ||
+                                                    exec.status === "timeout" ||
+                                                    exec.status === "aborted") && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleRetry(exec);
+                                                        }}
+                                                        className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10px] font-medium text-blue-500 hover:bg-blue-500/10 transition-colors"
+                                                        title="重试此执行"
+                                                    >
+                                                        <RotateCcw className="h-3 w-3" />
+                                                        <span>重试</span>
+                                                    </button>
+                                                )}
+                                                <span className="text-muted-foreground/40">
+                                                    {isExpanded ? (
+                                                        <ChevronUp className="h-4 w-4" />
+                                                    ) : (
+                                                        <ChevronDown className="h-4 w-4" />
+                                                    )}
                                                 </span>
                                             </div>
-                                            <div className="flex items-center gap-3 mt-1">
-                                                <span className="text-xs text-muted-foreground/70 flex items-center gap-1">
-                                                    <Clock className="h-3 w-3" />
-                                                    {formatTime(exec.startedAt)}
-                                                </span>
-                                                <span className="text-xs text-muted-foreground/50">
-                                                    耗时: {formatDuration(exec.startedAt, exec.finishedAt)}
-                                                </span>
+                                        </div>
+                                        {/* 展开节点详情 */}
+                                        {isExpanded && (
+                                            <div className="border-t border-border/50 bg-muted/10">
+                                                <div className="flex items-center gap-2 px-4 py-1.5 border-b border-border/30">
+                                                    <span className="text-[10px] font-medium text-muted-foreground/60 uppercase tracking-wider">
+                                                        节点执行详情
+                                                    </span>
+                                                    <span className="text-[10px] text-muted-foreground/40">
+                                                        ({nodeCount} 个节点)
+                                                    </span>
+                                                </div>
+                                                {renderNodeResults(exec)}
                                             </div>
-                                            {exec.error && (
-                                                <p className="text-xs text-red-500/80 mt-1 truncate">
-                                                    错误: {exec.error}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div className="shrink-0 flex items-center gap-1.5">
-                                            <span className="text-[10px] text-muted-foreground/40">
-                                                {exec.nodeResults
-                                                    ? Object.keys(
-                                                          exec.nodeResults as Record<
-                                                              string,
-                                                              unknown
-                                                          >,
-                                                      ).length
-                                                    : 0}{" "}
-                                                节点
-                                            </span>
-                                            {(exec.status === "failed" ||
-                                                exec.status === "timeout" ||
-                                                exec.status === "aborted") && (
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleRetry(exec);
-                                                    }}
-                                                    className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10px] font-medium text-blue-500 hover:bg-blue-500/10 transition-colors"
-                                                    title="重试此执行"
-                                                >
-                                                    <RotateCcw className="h-3 w-3" />
-                                                    <span>重试</span>
-                                                </button>
-                                            )}
-                                        </div>
+                                        )}
                                     </div>
                                 );
                             })}

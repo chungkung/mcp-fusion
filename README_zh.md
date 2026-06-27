@@ -16,6 +16,7 @@
   <a href="https://github.com/chungkung/mcp-fusion/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg" alt="许可证: AGPL-3.0" /></a>
   <a href="https://github.com/chungkung/mcp-fusion/releases"><img src="https://img.shields.io/github/v/release/chungkung/mcp-fusion?color=teal" alt="最新版本" /></a>
   <a href="https://github.com/chungkung/mcp-fusion/releases"><img src="https://img.shields.io/github/downloads/chungkung/mcp-fusion/total?color=blue" alt="下载量" /></a>
+  <img src="https://img.shields.io/badge/tests-27%2F27%20passed-brightgreen" alt="测试: 27/27 通过" />
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen" alt="平台: Windows | macOS | Linux" />
   <img src="https://img.shields.io/badge/rust-1.77%2B-orange" alt="Rust: 1.77+" />
 </p>
@@ -369,6 +370,10 @@ export LLM_MODEL="gpt-4o"
 - [x] RBAC 与 API Key 认证
 - [x] 跨平台打包 (Windows / macOS / Linux)
 - [x] 自动更新 (Tauri updater)
+- [x] 前端单元测试 (Vitest + React Testing Library)
+- [x] Rust 后端单元测试 (gateway + storage)
+- [x] CI/CD (Prettier, Vitest, npm audit, cargo audit)
+- [x] 技术文档 (架构、开发、API)
 
 ### 进行中 🚧
 - [ ] MCP Resource 与 Prompt 支持

@@ -55,4 +55,12 @@ export default defineConfig(async () => ({
         // 6. produce sourcemaps for debug builds
         sourcemap: !!process.env.TAURI_ENV_DEBUG,
     },
+
+    // Vitest configuration
+    test: {
+        globals: true,
+        environment: "jsdom",
+        setupFiles: ["./src/test/setup.ts"],
+        css: true,
+    },
 }));

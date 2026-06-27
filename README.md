@@ -16,6 +16,7 @@
   <a href="https://github.com/chungkung/mcp-fusion/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg" alt="License: AGPL-3.0" /></a>
   <a href="https://github.com/chungkung/mcp-fusion/releases"><img src="https://img.shields.io/github/v/release/chungkung/mcp-fusion?color=teal" alt="Latest Release" /></a>
   <a href="https://github.com/chungkung/mcp-fusion/releases"><img src="https://img.shields.io/github/downloads/chungkung/mcp-fusion/total?color=blue" alt="Downloads" /></a>
+  <img src="https://img.shields.io/badge/tests-27%2F27%20passed-brightgreen" alt="Tests: 27/27 passed" />
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen" alt="Platform: Windows | macOS | Linux" />
   <img src="https://img.shields.io/badge/rust-1.77%2B-orange" alt="Rust: 1.77+" />
 </p>
@@ -370,6 +371,10 @@ Or just describe it in natural language:
 - [x] RBAC & API key authentication
 - [x] Cross-platform packaging (Windows / macOS / Linux)
 - [x] Auto-update (Tauri updater)
+- [x] Frontend unit tests (Vitest + React Testing Library)
+- [x] Rust backend unit tests (gateway + storage)
+- [x] CI/CD with Prettier, Vitest, npm audit, cargo audit
+- [x] Technical documentation (architecture, development, API)
 
 ### In Progress 🚧
 - [ ] MCP Resource & Prompt support

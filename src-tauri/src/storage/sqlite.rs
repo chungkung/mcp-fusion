@@ -1166,3 +1166,7 @@ impl Database {
         Ok((total, valid, invalid_details))
     }
 }
+
+#[cfg(test)]
+#[path = "sqlite_tests.rs"]
+mod tests;

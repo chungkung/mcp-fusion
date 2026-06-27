@@ -68,8 +68,23 @@ All notable changes to MCP Fusion will be documented in this file.
 
 #### Frontend
 - Responsive Settings page with 5 tabs (General, MCP, Permissions, System, About)
-- Execution history with pagination and status filters
+- Execution history with pagination, status filters, and expandable node detail view
 - Audit log viewer with search
 - Marketplace browser with category filtering
 - Dark/Light theme support
 - Page transition animations
+- Execution history node-level detail expansion (Chevron toggle)
+
+#### Testing & Quality
+- Frontend unit tests with Vitest + React Testing Library (27 tests)
+- Rust backend unit tests for gateway module (JSON-RPC, factory function)
+- Rust backend unit tests for storage module (SQLite CRUD, migrations, audit chain)
+- GitHub Actions CI with Prettier check, Vitest, npm audit, and cargo audit
+- Dependabot configuration for npm, Cargo, and GitHub Actions
+
+#### Documentation
+- Architecture design document (docs/architecture.md)
+- Development guide (docs/development.md)
+- API reference (docs/api.md)
+- Pull request template
+- Support guide (SUPPORT.md)

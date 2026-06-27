@@ -9,11 +9,11 @@ use tokio::process::{Child, ChildStdin, ChildStdout, Command};
 // ============================================================
 
 #[derive(Debug, Serialize)]
-struct JsonRpcRequest {
-    jsonrpc: String,
-    id: u64,
-    method: String,
-    params: Value,
+pub(crate) struct JsonRpcRequest {
+    pub(crate) jsonrpc: String,
+    pub(crate) id: u64,
+    pub(crate) method: String,
+    pub(crate) params: Value,
 }
 
 #[derive(Debug, Deserialize)]
@@ -28,7 +28,7 @@ pub struct JsonRpcResponse {
 #[derive(Debug, Deserialize)]
 pub struct JsonRpcError {
     #[allow(dead_code)]
-    code: i64,
+    pub(crate) code: i64,
     pub message: String,
 }
 
