@@ -191,12 +191,6 @@ MCP Fusion 是首个**原生支持全部三种 MCP 传输协议**的桌面应用
   <em>RBAC 角色管理、API Key 生成与细粒度权限控制</em>
 </p>
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-audit.png" alt="审计追踪" width="840" />
-  <br/>
-  <em>防篡改审计日志 — 加密链式操作记录</em>
-</p>
-
 ---
 
 ## 📦 快速开始

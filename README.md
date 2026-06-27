@@ -191,12 +191,6 @@ Discover, install, and share workflow templates — all from within the app.
   <em>RBAC role management, API key generation, and granular permission control</em>
 </p>
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-audit.png" alt="Audit Trail" width="840" />
-  <br/>
-  <em>Tamper-evident audit logs — cryptographically chained operation trail</em>
-</p>
-
 ---
 
 ## 📦 Quick Start
