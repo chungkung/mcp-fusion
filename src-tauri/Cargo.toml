@@ -40,7 +40,7 @@ reqwest = { version = "0.12", features = ["stream", "json"] }
 prometheus = { version = "0.13", features = ["process"] }
 lazy_static = "1.4"
 opentelemetry = { version = "0.24", features = ["trace"] }
-opentelemetry_sdk = { version = "0.24", features = ["rt-tokio"] }
+opentelemetry_sdk = { version = "0.32", features = ["rt-tokio"] }
 opentelemetry-otlp = { version = "0.17", features = ["http-proto"] }
 tracing-opentelemetry = "0.25"
 
