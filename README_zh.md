@@ -40,7 +40,7 @@
 ### 🎬 一睹为快
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas.jpg" alt="MCP Fusion 画布模式" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas-real.png" alt="MCP Fusion 画布模式" width="90%" />
   <br/>
   <em>可视化画布编辑器 — 拖拽、连接、执行 AI 工具工作流</em>
 </p>
@@ -51,16 +51,16 @@
   <table>
     <tr>
       <td align="center" width="33%">
-        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.jpg" alt="工作流创建演示" width="95%" /><br/>
-        <em>1. 拖拽、连接、执行工作流</em>
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="Visual canvas — drag, connect, and execute" width="95%" /><br/>
+        <em>Visual canvas — drag, connect, and execute</em>
       </td>
       <td align="center" width="33%">
-        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.jpg" alt="LLM 意图解析演示" width="95%" /><br/>
-        <em>2. 自然语言 → 自动生成工作流</em>
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.gif" alt="Natural language → auto-generated workflow" width="95%" /><br/>
+        <em>Natural language → auto-generated workflow</em>
       </td>
       <td align="center" width="33%">
-        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.jpg" alt="执行监控演示" width="95%" /><br/>
-        <em>3. 实时执行监控与追踪</em>
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.gif" alt="Seamless multi-view navigation" width="95%" /><br/>
+        <em>Seamless multi-view navigation</em>
       </td>
     </tr>
   </table>
@@ -100,7 +100,7 @@
 - **自动布局** — 智能节点定位，生成整洁的工作流图
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas.jpg" alt="可视化画布编辑器" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas-real.png" alt="可视化画布编辑器" width="90%" />
 </p>
 
 ### 🧠 LLM 驱动的意图引擎
@@ -114,7 +114,7 @@
 - **支持模型**：OpenAI、Azure OpenAI、Ollama、LM Studio、vLLM 及任意 OpenAI 兼容端点
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent.jpg" alt="LLM 意图解析" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent-real.png" alt="LLM 意图解析" width="90%" />
   <br/>
   <em>用自然语言描述工作流 — AI 自动生成节点和连线</em>
 </p>
@@ -166,7 +166,7 @@ MCP Fusion 是首个**原生支持全部三种 MCP 传输协议**的桌面应用
 - **社区驱动** — 分享你的模板，发现他人的创作
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace.jpg" alt="插件市场" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace-real.png" alt="插件市场" width="90%" />
   <br/>
   <em>浏览、安装和管理社区工作流模板</em>
 </p>

@@ -40,7 +40,7 @@
 ### 🎬 See It In Action
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas.jpg" alt="MCP Fusion Canvas Mode" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas-real.png" alt="MCP Fusion Canvas Mode" width="90%" />
   <br/>
   <em>Visual canvas editor — drag, connect, and execute AI tool workflows</em>
 </p>
@@ -51,16 +51,16 @@
   <table>
     <tr>
       <td align="center" width="33%">
-        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.jpg" alt="Workflow Creation Demo" width="95%" /><br/>
-        <em>1. Drag, connect, and execute workflows</em>
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="Workflow Canvas Demo" width="95%" /><br/>
+        <em>1. Visual canvas — drag, connect, and execute</em>
       </td>
       <td align="center" width="33%">
-        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.jpg" alt="LLM Intent Parsing Demo" width="95%" /><br/>
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.gif" alt="LLM Intent Parsing Demo" width="95%" /><br/>
         <em>2. Natural language → auto-generated workflow</em>
       </td>
       <td align="center" width="33%">
-        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.jpg" alt="Execution Monitoring Demo" width="95%" /><br/>
-        <em>3. Real-time execution monitoring & tracing</em>
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.gif" alt="Multi-view Navigation Demo" width="95%" /><br/>
+        <em>3. Seamless multi-view navigation</em>
       </td>
     </tr>
   </table>
@@ -100,7 +100,7 @@ Design complex AI tool pipelines without writing a single line of code. The canv
 - **Auto-layout** — smart node positioning for clean workflow diagrams
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas.jpg" alt="Visual Canvas Editor" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas-real.png" alt="Visual Canvas Editor" width="90%" />
 </p>
 
 ### 🧠 LLM-Powered Intent Engine
@@ -114,7 +114,7 @@ Describe what you want in natural language, and MCP Fusion builds the workflow f
 - **Supports**: OpenAI, Azure OpenAI, Ollama, LM Studio, vLLM, and any OpenAI-compatible endpoint
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent.jpg" alt="LLM Intent Parsing" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent-real.png" alt="LLM Intent Parsing" width="90%" />
   <br/>
   <em>Describe your workflow in natural language — the AI generates nodes and edges automatically</em>
 </p>
@@ -166,7 +166,7 @@ Discover, install, and share workflow templates — all from within the app.
 - **Community-driven** — share your templates and discover others' creations
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace.jpg" alt="Plugin Marketplace" width="90%" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace-real.png" alt="Plugin Marketplace" width="90%" />
   <br/>
   <em>Browse, install, and manage workflow templates from the community</em>
 </p>
