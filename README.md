@@ -45,6 +45,27 @@
   <em>Visual canvas editor — drag, connect, and execute AI tool workflows</em>
 </p>
 
+### 🎥 Quick Demos
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="33%">
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.jpg" alt="Workflow Creation Demo" width="95%" /><br/>
+        <em>1. Drag, connect, and execute workflows</em>
+      </td>
+      <td align="center" width="33%">
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.jpg" alt="LLM Intent Parsing Demo" width="95%" /><br/>
+        <em>2. Natural language → auto-generated workflow</em>
+      </td>
+      <td align="center" width="33%">
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.jpg" alt="Execution Monitoring Demo" width="95%" /><br/>
+        <em>3. Real-time execution monitoring & tracing</em>
+      </td>
+    </tr>
+  </table>
+</p>
+
 ---
 
 ## ✨ Why MCP Fusion?

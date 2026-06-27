@@ -45,6 +45,27 @@
   <em>可视化画布编辑器 — 拖拽、连接、执行 AI 工具工作流</em>
 </p>
 
+### 🎥 快速演示
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="33%">
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.jpg" alt="工作流创建演示" width="95%" /><br/>
+        <em>1. 拖拽、连接、执行工作流</em>
+      </td>
+      <td align="center" width="33%">
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.jpg" alt="LLM 意图解析演示" width="95%" /><br/>
+        <em>2. 自然语言 → 自动生成工作流</em>
+      </td>
+      <td align="center" width="33%">
+        <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.jpg" alt="执行监控演示" width="95%" /><br/>
+        <em>3. 实时执行监控与追踪</em>
+      </td>
+    </tr>
+  </table>
+</p>
+
 ---
 
 ## ✨ 为什么选择 MCP Fusion？
