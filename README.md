@@ -113,7 +113,7 @@ Describe what you want in natural language, and MCP Fusion builds the workflow f
 - **Supports**: OpenAI, Azure OpenAI, Ollama, LM Studio, vLLM, and any OpenAI-compatible endpoint
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent-real.png" alt="LLM Intent Parsing" width="442" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent.png" alt="LLM Intent Parsing" width="840" />
   <br/>
   <em>Describe your workflow in natural language — the AI generates nodes and edges automatically</em>
 </p>
