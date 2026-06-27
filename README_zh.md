@@ -40,7 +40,7 @@
 ### 🎬 一睹为快
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="MCP Fusion 画布演示" width="420" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="MCP Fusion 画布演示" width="840" />
   <br/>
   <em>可视化画布编辑器 — 拖拽、连接、执行 AI 工具工作流</em>
 </p>
@@ -48,19 +48,19 @@
 ### 🎥 快速演示
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="工作流画布演示" width="420" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-workflow.gif" alt="工作流画布演示" width="840" />
   <br/>
   <em>1. 可视化画布 — 拖拽、连接、执行 AI 工具工作流</em>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.gif" alt="LLM 意图解析演示" width="420" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-intent.gif" alt="LLM 意图解析演示" width="840" />
   <br/>
   <em>2. 自然语言 → AI 自动生成工作流</em>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.gif" alt="多视图导航演示" width="420" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/demo-execution.gif" alt="多视图导航演示" width="840" />
   <br/>
   <em>3. 无缝多视图切换与实时执行</em>
 </p>
