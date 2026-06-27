@@ -99,7 +99,7 @@ Design complex AI tool pipelines without writing a single line of code. The canv
 - **Auto-layout** — smart node positioning for clean workflow diagrams
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas-real.png" alt="Visual Canvas Editor" width="442" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas.png" alt="Visual Canvas Editor" width="840" />
 </p>
 
 ### 🧠 LLM-Powered Intent Engine
@@ -128,6 +128,12 @@ MCP Fusion is the first desktop app to support **all three MCP transport protoco
 - **Auto-discovery** — automatically detects tools and schemas from any MCP-compatible server
 - **Multi-server orchestration** — connect Filesystem, GitHub, Postgres, Brave Search, and more in a single workflow
 - **Hot-reload** — update server configurations without restarting the app
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-mcp-config.png" alt="MCP Server Configuration" width="477" />
+  <br/>
+  <em>Manage MCP servers with stdio / SSE / Streamable HTTP — auto-discovery and health checks</em>
+</p>
 
 ### ⚡ Production-Grade Runtime
 
@@ -165,7 +171,7 @@ Discover, install, and share workflow templates — all from within the app.
 - **Community-driven** — share your templates and discover others' creations
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace-real.png" alt="Plugin Marketplace" width="442" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace.png" alt="Plugin Marketplace" width="477" />
   <br/>
   <em>Browse, install, and manage workflow templates from the community</em>
 </p>
@@ -177,6 +183,18 @@ Discover, install, and share workflow templates — all from within the app.
 - **Database encryption** — sensitive configurations stored encrypted in SQLite
 - **Tamper-evident audit trail** — cryptographically chained operation logs
 - **No telemetry** — zero data leaves your machine unless you configure OTLP export
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-permissions.png" alt="RBAC & API Key Management" width="477" />
+  <br/>
+  <em>RBAC role management, API key generation, and granular permission control</em>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-audit.png" alt="Audit Trail" width="477" />
+  <br/>
+  <em>Tamper-evident audit logs — cryptographically chained operation trail</em>
+</p>
 
 ---
 

@@ -99,7 +99,7 @@
 - **自动布局** — 智能节点定位，生成整洁的工作流图
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas-real.png" alt="可视化画布编辑器" width="442" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-canvas.png" alt="可视化画布编辑器" width="840" />
 </p>
 
 ### 🧠 LLM 驱动的意图引擎
@@ -113,7 +113,7 @@
 - **支持模型**：OpenAI、Azure OpenAI、Ollama、LM Studio、vLLM 及任意 OpenAI 兼容端点
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent-real.png" alt="LLM 意图解析" width="442" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-intent.png" alt="LLM 意图解析" width="840" />
   <br/>
   <em>用自然语言描述工作流 — AI 自动生成节点和连线</em>
 </p>
@@ -128,6 +128,12 @@ MCP Fusion 是首个**原生支持全部三种 MCP 传输协议**的桌面应用
 - **自动发现** — 自动检测任意 MCP 兼容服务器的工具和 Schema
 - **跨服务器编排** — 在单个工作流中连接 Filesystem、GitHub、Postgres、Brave Search 等
 - **热重载** — 无需重启即可更新服务器配置
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-mcp-config.png" alt="MCP 服务器配置" width="477" />
+  <br/>
+  <em>管理 MCP 服务器 — 支持 stdio / SSE / Streamable HTTP 三种传输协议，自动发现与健康检查</em>
+</p>
 
 ### ⚡ 生产级运行时
 
@@ -165,7 +171,7 @@ MCP Fusion 是首个**原生支持全部三种 MCP 传输协议**的桌面应用
 - **社区驱动** — 分享你的模板，发现他人的创作
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace-real.png" alt="插件市场" width="442" />
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-marketplace.png" alt="插件市场" width="477" />
   <br/>
   <em>浏览、安装和管理社区工作流模板</em>
 </p>
@@ -177,6 +183,18 @@ MCP Fusion 是首个**原生支持全部三种 MCP 传输协议**的桌面应用
 - **数据库加密** — 敏感配置加密存储在 SQLite 中
 - **防篡改审计追踪** — 加密链式操作日志
 - **零遥测** — 除非你配置了 OTLP 导出，否则零数据离开你的机器
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-permissions.png" alt="RBAC 与 API Key 管理" width="477" />
+  <br/>
+  <em>RBAC 角色管理、API Key 生成与细粒度权限控制</em>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/chungkung/mcp-fusion/main/docs/assets/screenshot-audit.png" alt="审计追踪" width="477" />
+  <br/>
+  <em>防篡改审计日志 — 加密链式操作记录</em>
+</p>
 
 ---
 
