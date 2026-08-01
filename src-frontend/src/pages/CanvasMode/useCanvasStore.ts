@@ -92,7 +92,7 @@ export const useCanvasStore = create<CanvasState>((set) => ({
         try {
             const serversResult = await mcpService.listServers();
             if (!serversResult.success || !serversResult.data) {
-                set({ toolsError: serversResult.error ?? "获取服务器列表失败", toolsLoading: false });
+                set({ tools: [], toolsError: null, toolsLoading: false });
                 return;
             }
             const allTools: MCPTool[] = [];
@@ -104,138 +104,12 @@ export const useCanvasStore = create<CanvasState>((set) => ({
                 }),
             );
             toolResults.forEach((tools) => allTools.push(...tools));
-            if (allTools.length === 0) {
-                set({ tools: MOCK_TOOLS, toolsLoading: false });
-                return;
-            }
             set({ tools: allTools, toolsLoading: false });
         } catch {
-            set({ tools: MOCK_TOOLS, toolsError: null, toolsLoading: false });
+            set({ tools: [], toolsError: null, toolsLoading: false });
         }
     },
 }));
-
-// ============================================================
-// 模拟 MCP 工具列表（开发/降级用）
-// ============================================================
-
-const MOCK_TOOLS: MCPTool[] = [
-    {
-        name: "http_request",
-        description: "发送 HTTP 请求并返回响应数据",
-        serverId: "mcp-http",
-        inputSchema: {
-            type: "object",
-            properties: {
-                url: { type: "string", description: "请求 URL" },
-                method: { type: "string", enum: ["GET", "POST", "PUT", "DELETE"], default: "GET" },
-                headers: { type: "string", description: "JSON 格式的请求头" },
-                body: { type: "string", description: "请求体 (JSON)" },
-            },
-            required: ["url"],
-        },
-        outputSchema: {},
-    },
-    {
-        name: "csv_parser",
-        description: "解析 CSV 数据并转换为结构化对象",
-        serverId: "mcp-data",
-        inputSchema: {
-            type: "object",
-            properties: {
-                data: { type: "string", description: "CSV 原始数据" },
-                delimiter: { type: "string", default: "," },
-                hasHeader: { type: "boolean", default: true },
-            },
-            required: ["data"],
-        },
-        outputSchema: {},
-    },
-    {
-        name: "json_transform",
-        description: "对 JSON 数据进行过滤、映射、聚合等变换操作",
-        serverId: "mcp-data",
-        inputSchema: {
-            type: "object",
-            properties: {
-                data: { type: "string", description: "输入 JSON 数据" },
-                expression: { type: "string", description: "JMESPath 表达式" },
-            },
-            required: ["data", "expression"],
-        },
-        outputSchema: {},
-    },
-    {
-        name: "text_ai",
-        description: "调用 AI 大模型进行文本生成、翻译、摘要等",
-        serverId: "mcp-ai",
-        inputSchema: {
-            type: "object",
-            properties: {
-                prompt: { type: "string", description: "提示词" },
-                model: { type: "string", default: "gpt-4" },
-                max_tokens: { type: "number", default: 1024 },
-            },
-            required: ["prompt"],
-        },
-        outputSchema: {},
-    },
-    {
-        name: "file_writer",
-        description: "将数据写入本地文件系统",
-        serverId: "mcp-fs",
-        inputSchema: {
-            type: "object",
-            properties: {
-                path: { type: "string", description: "文件路径" },
-                content: { type: "string", description: "文件内容" },
-            },
-            required: ["path", "content"],
-        },
-        outputSchema: {},
-    },
-    {
-        name: "file_reader",
-        description: "从本地文件系统读取文件内容",
-        serverId: "mcp-fs",
-        inputSchema: {
-            type: "object",
-            properties: {
-                path: { type: "string", description: "文件路径" },
-            },
-            required: ["path"],
-        },
-        outputSchema: {},
-    },
-    {
-        name: "webhook_send",
-        description: "向指定 Webhook 地址发送通知消息",
-        serverId: "mcp-notify",
-        inputSchema: {
-            type: "object",
-            properties: {
-                url: { type: "string", description: "Webhook URL" },
-                message: { type: "string", description: "消息内容" },
-            },
-            required: ["url", "message"],
-        },
-        outputSchema: {},
-    },
-    {
-        name: "db_query",
-        description: "执行 SQL 查询并返回结果集",
-        serverId: "mcp-db",
-        inputSchema: {
-            type: "object",
-            properties: {
-                query: { type: "string", description: "SQL 查询语句" },
-                connection: { type: "string", description: "数据库连接名称" },
-            },
-            required: ["query", "connection"],
-        },
-        outputSchema: {},
-    },
-];
 
 // ============================================================
 // 从 store 获取工具分类（按 serverId 分组）

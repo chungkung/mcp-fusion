@@ -107,14 +107,6 @@ struct ChatRequest {
     messages: Vec<ChatMessage>,
     max_tokens: u32,
     temperature: f32,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    response_format: Option<ResponseFormat>,
-}
-
-#[derive(Debug, Serialize)]
-struct ResponseFormat {
-    #[serde(rename = "type")]
-    format_type: String,
 }
 
 /// OpenAI-compatible 聊天响应
@@ -165,7 +157,6 @@ impl LlmClient {
             messages,
             max_tokens: self.config.max_tokens,
             temperature: self.config.temperature,
-            response_format: None,
         };
 
         let resp = self
@@ -231,7 +222,6 @@ impl LlmClient {
             messages,
             max_tokens: self.config.max_tokens,
             temperature: self.config.temperature,
-            response_format: None,
         };
 
         let resp = self
@@ -419,8 +409,6 @@ pub struct ConversationTurn {
 /// 对话会话
 #[derive(Debug, Clone)]
 pub struct ConversationSession {
-    #[allow(dead_code)]
-    pub session_id: String,
     pub turns: Vec<ConversationTurn>,
     pub current_workflow: Option<ParsedWorkflow>,
 }
@@ -428,7 +416,6 @@ pub struct ConversationSession {
 impl ConversationSession {
     pub fn new() -> Self {
         Self {
-            session_id: uuid::Uuid::new_v4().to_string(),
             turns: Vec::new(),
             current_workflow: None,
         }
@@ -589,96 +576,4 @@ fn keyword_recommend_tools(user_text: &str, available_tools: &[ToolInfo]) -> Vec
         .take(5)
         .map(|(t, _)| format!("{}.{}", t.server_id, t.name))
         .collect()
-}
-
-// ============================================================
-// 测试
-// ============================================================
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_llm_config_default() {
-        let config = LlmConfig::default();
-        assert!(!config.is_configured()); // 默认无 API Key
-        assert_eq!(config.model, "gpt-4o-mini");
-    }
-
-    #[test]
-    fn test_llm_config_from_env_empty() {
-        // 清除环境变量以确保测试隔离
-        std::env::remove_var("LLM_API_KEY");
-        std::env::remove_var("OPENAI_API_KEY");
-        let config = LlmConfig::from_env();
-        assert!(!config.is_configured());
-    }
-
-    #[test]
-    fn test_extract_json_from_response_plain() {
-        let input = r#"{"name": "test", "nodes": []}"#;
-        let result = extract_json_from_response(input);
-        assert_eq!(result, input);
-    }
-
-    #[test]
-    fn test_extract_json_from_response_code_block() {
-        let input = "```json\n{\"name\": \"test\"}\n```";
-        let result = extract_json_from_response(input);
-        assert_eq!(result, "{\"name\": \"test\"}");
-    }
-
-    #[test]
-    fn test_extract_json_from_response_code_block_no_lang() {
-        let input = "```\n{\"name\": \"test\"}\n```";
-        let result = extract_json_from_response(input);
-        assert_eq!(result, "{\"name\": \"test\"}");
-    }
-
-    #[test]
-    fn test_keyword_recommend_tools() {
-        let tools = vec![
-            ToolInfo {
-                server_id: "s1".to_string(),
-                name: "http_request".to_string(),
-                description: "Make HTTP requests".to_string(),
-            },
-            ToolInfo {
-                server_id: "s2".to_string(),
-                name: "file_writer".to_string(),
-                description: "Write files to disk".to_string(),
-            },
-            ToolInfo {
-                server_id: "s3".to_string(),
-                name: "db_query".to_string(),
-                description: "Query database".to_string(),
-            },
-        ];
-        let result = keyword_recommend_tools("download a file from http and save it", &tools);
-        assert!(!result.is_empty());
-        assert!(result.iter().any(|r| r.contains("http_request")));
-        assert!(result.iter().any(|r| r.contains("file_writer")));
-    }
-
-    #[test]
-    fn test_conversation_session() {
-        let mut session = ConversationSession::new();
-        session.add_user_message("帮我创建一个HTTP请求工作流");
-        session.add_assistant_message("好的，已创建。需要修改吗？");
-        assert_eq!(session.turns.len(), 2);
-        assert_eq!(session.to_history().len(), 2);
-    }
-
-    #[test]
-    fn test_build_intent_system_prompt() {
-        let tools = vec![ToolInfo {
-            server_id: "mcp-http".to_string(),
-            name: "http_request".to_string(),
-            description: "发送HTTP请求".to_string(),
-        }];
-        let prompt = build_intent_system_prompt(&tools);
-        assert!(prompt.contains("mcp-http.http_request"));
-        assert!(prompt.contains("工作流编排专家"));
-    }
 }

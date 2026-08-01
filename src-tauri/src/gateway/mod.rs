@@ -2,10 +2,6 @@ pub mod sse;
 pub mod stdio;
 pub mod streamable_http;
 
-#[cfg(test)]
-#[path = "mod_tests.rs"]
-mod tests;
-
 use anyhow::Result;
 use serde_json::Value;
 

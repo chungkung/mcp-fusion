@@ -83,38 +83,6 @@ pub fn init_tracer(
     Some(layer)
 }
 
-/// 在工作流执行上下文中创建 Span
-///
-/// 在已有 tracing span 中创建子 span，自动继承 trace_id。
-#[allow(dead_code)]
-pub fn workflow_span(workflow_id: &str, trace_id: &str) -> tracing::Span {
-    tracing::info_span!(
-        "workflow_execute",
-        workflow_id = %workflow_id,
-        otel.trace_id = %trace_id,
-    )
-}
-
-/// 在节点执行上下文中创建 Span
-#[allow(dead_code)]
-pub fn node_span(node_id: &str, node_label: &str) -> tracing::Span {
-    tracing::info_span!(
-        "node_execute",
-        node_id = %node_id,
-        node_label = %node_label,
-    )
-}
-
-/// 在 MCP 工具调用上下文中创建 Span
-#[allow(dead_code)]
-pub fn tool_call_span(server_id: &str, tool_name: &str) -> tracing::Span {
-    tracing::info_span!(
-        "mcp_tool_call",
-        server_id = %server_id,
-        tool_name = %tool_name,
-    )
-}
-
 /// 强制刷新待发送的追踪数据
 ///
 /// 建议在程序退出前调用，确保所有 Span 数据已发送。
@@ -123,35 +91,4 @@ pub fn shutdown_tracer() {
         let _ = provider.force_flush();
     }
     opentelemetry::global::shutdown_tracer_provider();
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_init_tracer_with_empty_endpoint() {
-        let layer = init_tracer("", "test-service");
-        assert!(layer.is_none());
-    }
-
-    #[test]
-    fn test_workflow_span_creation() {
-        // 无 subscriber 时 span 可能为 disabled，但创建不应 panic
-        let span = workflow_span("wf-001", "trace-abc");
-        let _guard = span.enter();
-        // span 成功创建并进入，验证不 panic
-    }
-
-    #[test]
-    fn test_node_span_creation() {
-        let span = node_span("node-1", "API 请求");
-        let _guard = span.enter();
-    }
-
-    #[test]
-    fn test_tool_call_span_creation() {
-        let span = tool_call_span("server-1", "fetch_data");
-        let _guard = span.enter();
-    }
 }

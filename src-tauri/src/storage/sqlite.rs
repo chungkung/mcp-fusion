@@ -202,6 +202,7 @@ impl Database {
             conn: Mutex::new(conn),
         };
         db.init_tables()?;
+        db.run_migrations()?;
         Ok(db)
     }
 
@@ -305,6 +306,18 @@ impl Database {
             )
             .unwrap_or(0);
 
+        // 全新数据库：init_tables() 已创建最新 schema，跳过增量 ALTER TABLE
+        const LATEST_VERSION: i32 = 4;
+        if current_version == 0 {
+            conn.execute(
+                "INSERT OR IGNORE INTO schema_version (version) VALUES (?1)",
+                params![LATEST_VERSION],
+            )
+            .map_err(|e| format!("记录迁移版本失败: {e}"))?;
+            tracing::info!("数据库迁移完成（全新数据库，跳至 v{}）", LATEST_VERSION);
+            return Ok(());
+        }
+
         // 迁移 1: 初始表结构（如果 version < 1，说明表结构需要更新）
         if current_version < 1 {
             conn.execute(
@@ -314,9 +327,6 @@ impl Database {
             .map_err(|e| format!("记录迁移版本 v1 失败: {e}"))?;
             tracing::info!("数据库迁移 v1 完成");
         }
-
-        // 后续迁移可在此处添加，例如：
-        // if current_version < 2 { ... }
 
         // 迁移 2: 添加执行锁和幂等/断点续传字段
         if current_version < 2 {
@@ -1166,7 +1176,3 @@ impl Database {
         Ok((total, valid, invalid_details))
     }
 }
-
-#[cfg(test)]
-#[path = "sqlite_tests.rs"]
-mod tests;

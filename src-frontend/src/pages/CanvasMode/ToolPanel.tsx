@@ -58,14 +58,14 @@ const ToolPanel: FC<ToolPanelProps> = ({ className }) => {
                             {category.tools.map((tool) => (
                                 <div
                                     key={tool.name}
-                                    draggable
+                                    draggable={true}
                                     onDragStart={(e) => onDragStart(e, tool.name)}
                                     className="flex items-center gap-2.5 rounded-lg border border-border bg-card hover:bg-accent/50 hover:border-primary/30 hover:scale-[1.02] active:scale-[0.98] cursor-grab active:cursor-grabbing px-3 py-2.5 transition-all duration-150"
                                 >
-                                    <span className="text-base shrink-0">
+                                    <span className="text-base shrink-0" draggable={false}>
                                         {ToolIcons[tool.name] ?? "\u{1F527}"}
                                     </span>
-                                    <div className="min-w-0">
+                                    <div className="min-w-0" draggable={false}>
                                         <p className="text-xs font-medium text-foreground truncate">
                                             {tool.name}
                                         </p>

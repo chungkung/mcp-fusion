@@ -18,8 +18,6 @@ pub(crate) struct JsonRpcRequest {
 
 #[derive(Debug, Deserialize)]
 pub struct JsonRpcResponse {
-    #[allow(dead_code)]
-    pub jsonrpc: String,
     pub id: Option<u64>,
     pub result: Option<Value>,
     pub error: Option<JsonRpcError>,
@@ -27,8 +25,6 @@ pub struct JsonRpcResponse {
 
 #[derive(Debug, Deserialize)]
 pub struct JsonRpcError {
-    #[allow(dead_code)]
-    pub(crate) code: i64,
     pub message: String,
 }
 

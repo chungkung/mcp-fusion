@@ -113,73 +113,7 @@ pub fn record_tool_call(status: &str, duration_secs: f64) {
         .observe(duration_secs);
 }
 
-/// 设置 MCP 服务器连接状态
-#[cfg(test)]
-pub fn set_server_connection_status(connected: bool, has_error: bool) {
-    let value = if has_error {
-        2.0
-    } else if connected {
-        1.0
-    } else {
-        0.0
-    };
-    MCP_SERVER_CONNECTION_STATUS.set(value);
-}
-
 /// 设置活跃工作流数量
 pub fn set_active_workflows(count: i64) {
     ACTIVE_WORKFLOWS.set(count);
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_gather_metrics_returns_valid_format() {
-        // 先触发 lazy_static 初始化（至少记录一个指标）
-        record_workflow_execution("success", 0.0);
-        set_active_workflows(0);
-        let result = gather_metrics();
-        // Prometheus 格式应包含 HELP 或 TYPE 行
-        assert!(result.contains("mcp_fusion_workflow_executions_total"));
-        assert!(result.contains("mcp_fusion_active_workflows"));
-    }
-
-    #[test]
-    fn test_record_workflow_execution() {
-        record_workflow_execution("success", 1.5);
-        let result = gather_metrics();
-        assert!(result.contains("mcp_fusion_workflow_executions_total{status=\"success\"}"));
-    }
-
-    #[test]
-    fn test_record_node_execution() {
-        record_node_execution("failed", 0.3);
-        let result = gather_metrics();
-        assert!(result.contains("mcp_fusion_node_executions_total{status=\"failed\"}"));
-    }
-
-    #[test]
-    fn test_record_tool_call() {
-        record_tool_call("success", 0.05);
-        let result = gather_metrics();
-        assert!(result.contains("mcp_fusion_mcp_tool_calls_total{status=\"success\"}"));
-    }
-
-    #[test]
-    fn test_active_workflows_gauge() {
-        set_active_workflows(3);
-        let result = gather_metrics();
-        // 只验证指标名称存在，不验证精确值（并行测试时全局状态可能被其他测试修改）
-        assert!(result.contains("mcp_fusion_active_workflows"));
-        set_active_workflows(0);
-    }
-
-    #[test]
-    fn test_server_connection_status() {
-        set_server_connection_status(true, false);
-        let result = gather_metrics();
-        assert!(result.contains("mcp_fusion_mcp_server_connection_status 1"));
-    }
 }

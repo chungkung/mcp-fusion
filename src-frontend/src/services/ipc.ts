@@ -1,5 +1,6 @@
 import { type IpcResult } from "@shared/types";
 import { IPC_CHANNELS } from "@shared/constants";
+import { type MCPServer, type MCPTool, type Workflow, type OrchestrationResult, type RunStatus } from "@shared/types";
 
 // ============================================================
 // Tauri 环境检测
@@ -17,20 +18,17 @@ function isTauri(): boolean {
 }
 
 // ============================================================
-// 统一 IPC 调用封装（含浏览器降级 Mock）
+// 统一 IPC 调用封装
 // ============================================================
 
 /**
  * 调用 Tauri Rust 命令，统一错误处理。
- * 浏览器 dev 模式下自动降级返回 Mock 数据。
  */
 export async function invokeIPC<T = unknown>(
     channel: string,
     args?: Record<string, unknown>,
 ): Promise<IpcResult<T>> {
     if (!isTauri()) {
-        const mock = getMock(channel, args);
-        if (mock !== undefined) return mock as IpcResult<T>;
         return {
             success: false,
             error: "Tauri 环境未就绪，请在 Tauri 应用中运行",
@@ -63,261 +61,6 @@ export async function listenIPC<T = unknown>(
     const { listen } = await import("@tauri-apps/api/event");
     const unlisten = await listen<T>(event, (e) => handler(e.payload));
     return unlisten;
-}
-
-// ============================================================
-// 浏览器 Mock 数据（开发调试用）
-// ============================================================
-
-import {
-    type MCPServer,
-    type MCPTool,
-    type Workflow,
-    type OrchestrationResult,
-    MCPProtocol,
-    WorkflowMode,
-    type RunStatus,
-} from "@shared/types";
-
-let mockWorkflowId = 0;
-
-function getMock(
-    channel: string,
-    args?: Record<string, unknown>,
-): IpcResult<unknown> | undefined {
-    switch (channel) {
-        case IPC_CHANNELS.MCP_LIST_SERVERS: {
-            const servers: MCPServer[] = [
-                {
-                    id: "mock-1",
-                    name: "Demo MCP Server",
-                    description: "浏览器调试用模拟服务端",
-                    protocol: MCPProtocol.Http,
-                    endpoint: "http://localhost:3000/mcp",
-                    command: "",
-                    args: [],
-                    env: {},
-                    enabled: true,
-                    connectionStatus: "connected",
-                    createdAt: Date.now(),
-                    updatedAt: Date.now(),
-                },
-            ];
-            return { success: true, data: servers };
-        }
-
-        case IPC_CHANNELS.MCP_LIST_TOOLS: {
-            const tools: MCPTool[] = [
-                {
-                    name: "mock_tool",
-                    description: "模拟工具",
-                    inputSchema: {},
-                    outputSchema: {},
-                    serverId:
-                        (args?.serverId as string) ?? "mock-1",
-                },
-            ];
-            return { success: true, data: tools };
-        }
-
-        case IPC_CHANNELS.MCP_EXECUTE_TOOL:
-            return {
-                success: true,
-                data: { result: "mock_execution_ok" },
-            };
-
-        case IPC_CHANNELS.MCP_ADD_SERVER: {
-            const server = args?.server as Partial<MCPServer>;
-            return {
-                success: true,
-                data: {
-                    ...server,
-                    id: "mock-new",
-                    createdAt: Date.now(),
-                    updatedAt: Date.now(),
-                },
-            };
-        }
-
-        case IPC_CHANNELS.MCP_REMOVE_SERVER:
-            return { success: true, data: undefined };
-
-        case IPC_CHANNELS.MCP_PING_SERVER:
-            return {
-                success: true,
-                data: { status: "connected", latency_ms: 5, tool_count: 1 },
-            };
-
-        case IPC_CHANNELS.FLOW_LOAD: {
-            const workflows: Workflow[] = [
-                {
-                    id: "flow-mock-1",
-                    name: "示例工作流",
-                    description: "浏览器调试用模拟工作流",
-                    mode: WorkflowMode.Canvas,
-                    status: "idle" as RunStatus,
-                    nodes: [],
-                    edges: [],
-                    createdAt: Date.now(),
-                    updatedAt: Date.now(),
-                },
-            ];
-            return { success: true, data: workflows };
-        }
-
-        case IPC_CHANNELS.FLOW_SAVE: {
-            const workflow = args?.workflow as Workflow;
-            return {
-                success: true,
-                data: { ...workflow, updatedAt: Date.now() },
-            };
-        }
-
-        case IPC_CHANNELS.FLOW_DELETE:
-            return { success: true, data: undefined };
-
-        case IPC_CHANNELS.FLOW_EXECUTE: {
-            const id = (args?.id as string) ?? "mock";
-            return {
-                success: true,
-                data: {
-                    workflow_id: id,
-                    status: "success",
-                    node_results: [],
-                },
-            };
-        }
-
-        case IPC_CHANNELS.INTENT_PARSE: {
-            mockWorkflowId++;
-            const text = (args?.text as string)?.slice(0, 30) ?? "";
-            const parsed: Workflow = {
-                id: `flow-${mockWorkflowId}`,
-                name: `工作流 ${mockWorkflowId}`,
-                description: `由意图解析生成: ${text}`,
-                mode: WorkflowMode.Intent,
-                status: "idle" as RunStatus,
-                nodes: [
-                    {
-                        id: "node-1",
-                        type: "default",
-                        position: { x: 100, y: 100 },
-                        data: {
-                            label: "API 请求",
-                            tool: undefined,
-                            inputs: {
-                                url: "https://api.example.com/data",
-                            },
-                            outputs: {},
-                            config: {},
-                        },
-                    },
-                    {
-                        id: "node-2",
-                        type: "default",
-                        position: { x: 400, y: 100 },
-                        data: {
-                            label: "保存文件",
-                            tool: undefined,
-                            inputs: { path: "output.csv" },
-                            outputs: {},
-                            config: {},
-                        },
-                    },
-                ],
-                edges: [
-                    {
-                        id: "edge-1",
-                        source: "node-1",
-                        target: "node-2",
-                    },
-                ],
-                createdAt: Date.now(),
-                updatedAt: Date.now(),
-            };
-            return { success: true, data: parsed };
-        }
-
-        case IPC_CHANNELS.RUNTIME_STATUS:
-            return {
-                success: true,
-                data: {
-                    status: "idle" as RunStatus,
-                    message: "就绪",
-                },
-            };
-
-        case IPC_CHANNELS.RUNTIME_STOP:
-            return { success: true, data: undefined };
-
-        case IPC_CHANNELS.MARKETPLACE_LIST: {
-            const templates: MarketplaceTemplate[] = [
-                { id: "api-data-aggregation", name: "API 数据聚合", description: "从多个 API 获取数据并合并输出", category: "数据处理", version: "1.0.0", author: "MCP Fusion", stars: 128, downloads: 2400, icon: "🔗", node_count: 3, edge_count: 2, tags: ["api", "http", "data"], source_url: "", file_url: "", updated_at: "2025-01-01" },
-                { id: "file-batch-process", name: "文件批量处理", description: "批量重命名、转换格式、压缩文件", category: "文件操作", version: "1.0.0", author: "MCP Fusion", stars: 96, downloads: 1800, icon: "📁", node_count: 2, edge_count: 1, tags: ["file", "batch", "convert"], source_url: "", file_url: "", updated_at: "2025-01-01" },
-                { id: "cron-scheduler", name: "定时任务调度", description: "基于 Cron 表达式的定时工作流", category: "自动化", version: "1.0.0", author: "MCP Fusion", stars: 75, downloads: 3200, icon: "⏰", node_count: 2, edge_count: 1, tags: ["cron", "schedule", "timer"], source_url: "", file_url: "", updated_at: "2025-01-01" },
-                { id: "git-pipeline", name: "Git 操作流水线", description: "自动 clone、commit、push 操作", category: "DevOps", version: "1.0.0", author: "MCP Fusion", stars: 210, downloads: 5600, icon: "🔧", node_count: 3, edge_count: 2, tags: ["git", "ci", "devops"], source_url: "", file_url: "", updated_at: "2025-01-01" },
-                { id: "db-migration", name: "数据库迁移", description: "跨数据库的数据迁移与同步", category: "数据库", version: "1.0.0", author: "MCP Fusion", stars: 64, downloads: 1200, icon: "🗄️", node_count: 2, edge_count: 1, tags: ["database", "migration", "sql"], source_url: "", file_url: "", updated_at: "2025-01-01" },
-                { id: "image-process", name: "图片处理流水线", description: "裁剪、压缩、加水印一键完成", category: "媒体处理", version: "1.0.0", author: "MCP Fusion", stars: 89, downloads: 1500, icon: "🖼️", node_count: 3, edge_count: 2, tags: ["image", "compress", "watermark"], source_url: "", file_url: "", updated_at: "2025-01-01" },
-                { id: "webhook-listener", name: "Webhook 监听", description: "接收 Webhook 并触发后续流程", category: "自动化", version: "1.0.0", author: "MCP Fusion", stars: 156, downloads: 4100, icon: "🪝", node_count: 2, edge_count: 1, tags: ["webhook", "trigger", "event"], source_url: "", file_url: "", updated_at: "2025-01-01" },
-                { id: "log-analyzer", name: "日志分析", description: "收集、解析、可视化日志数据", category: "监控", version: "1.0.0", author: "MCP Fusion", stars: 43, downloads: 900, icon: "📊", node_count: 2, edge_count: 1, tags: ["log", "analyze", "monitor"], source_url: "", file_url: "", updated_at: "2025-01-01" },
-            ];
-            const category = (args?.category as string) ?? "all";
-            const search = (args?.search as string) ?? "";
-            let filtered = templates;
-            if (category && category !== "all") {
-                filtered = filtered.filter((t) => t.category === category);
-            }
-            if (search) {
-                const q = search.toLowerCase();
-                filtered = filtered.filter(
-                    (t) =>
-                        t.name.toLowerCase().includes(q) ||
-                        t.description.toLowerCase().includes(q) ||
-                        t.tags.some((tag) => tag.toLowerCase().includes(q)),
-                );
-            }
-            return { success: true, data: filtered };
-        }
-
-        case IPC_CHANNELS.MARKETPLACE_INSTALL: {
-            const templateId = (args?.templateId as string) ?? "api-data-aggregation";
-            const templateNames: Record<string, string> = {
-                "api-data-aggregation": "API 数据聚合",
-                "file-batch-process": "文件批量处理",
-                "cron-scheduler": "定时任务调度",
-                "git-pipeline": "Git 操作流水线",
-                "db-migration": "数据库迁移",
-                "image-process": "图片处理流水线",
-                "webhook-listener": "Webhook 监听",
-                "log-analyzer": "日志分析",
-            };
-            const workflow: Workflow = {
-                id: `installed-${templateId}`,
-                name: templateNames[templateId] ?? templateId,
-                description: `从模板 "${templateId}" 安装的工作流`,
-                mode: WorkflowMode.Intent,
-                status: "idle" as RunStatus,
-                nodes: [
-                    {
-                        id: "node-1",
-                        type: "mcpTool",
-                        position: { x: 100, y: 100 },
-                        data: { label: "Step 1", tool: undefined, inputs: {}, outputs: {}, config: {} },
-                    },
-                ],
-                edges: [],
-                createdAt: Date.now(),
-                updatedAt: Date.now(),
-            };
-            return { success: true, data: workflow };
-        }
-
-        case IPC_CHANNELS.MARKETPLACE_CHECK_UPDATES:
-            return { success: true, data: [] };
-
-        default:
-            return undefined;
-    }
 }
 
 // ============================================================

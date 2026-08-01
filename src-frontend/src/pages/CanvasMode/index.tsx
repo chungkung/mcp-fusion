@@ -146,6 +146,73 @@ const CanvasMode: FC = () => {
     }, [fetchTools]);
 
     const workflowLoading = useWorkflowStore((s) => s.loading);
+    const currentWorkflow = useWorkflowStore((s) => s.currentWorkflow);
+    const setCurrentWorkflow = useWorkflowStore((s) => s.setCurrentWorkflow);
+
+    // 同步 currentWorkflow（从意图模式生成）到画布
+    useEffect(() => {
+        if (!currentWorkflow || !currentWorkflow.nodes || currentWorkflow.nodes.length === 0) return;
+
+        // 转换 WorkflowNode → ReactFlow Node
+        const syncedNodes: Node[] = currentWorkflow.nodes.map((wfNode) => ({
+            id: wfNode.id,
+            type: "animatedMCP",
+            position: wfNode.position,
+            data: {
+                label: wfNode.data.label,
+                toolName: wfNode.data.tool?.name ?? wfNode.data.label,
+                description: wfNode.data.tool?.description ?? "",
+                serverId: wfNode.data.tool?.serverId ?? "",
+                status: RunStatus.Idle,
+            },
+        }));
+
+        // 转换 WorkflowEdge → ReactFlow Edge
+        const syncedEdges: Edge[] = (currentWorkflow.edges ?? []).map((wfEdge) => ({
+            id: wfEdge.id,
+            source: wfEdge.source,
+            target: wfEdge.target,
+            sourceHandle: wfEdge.sourceHandle ?? undefined,
+            targetHandle: wfEdge.targetHandle ?? undefined,
+            type: wfEdge.type ?? "animated",
+            animated: wfEdge.animated ?? true,
+        }));
+
+        // 分布节点位置（如果所有节点位置相同，说明是自动生成的，需要重新排列）
+        const positions = syncedNodes.map((n) => n.position);
+        const allSamePos = positions.length > 1 && positions.every(
+            (p) => p.x === positions[0].x && p.y === positions[0].y,
+        );
+        if (allSamePos) {
+            syncedNodes.forEach((n, i) => {
+                n.position = { x: i * 280 + 100, y: (i % 2) * 200 + 100 };
+            });
+        }
+
+        setNodes(syncedNodes);
+        setEdges(syncedEdges);
+
+        // 同步 nodeStates
+        currentWorkflow.nodes.forEach((wfNode) => {
+            const state: CanvasNodeState = {
+                id: wfNode.id,
+                tool: wfNode.data.tool ?? {
+                    name: wfNode.data.label,
+                    description: wfNode.data.label,
+                    inputSchema: {},
+                    outputSchema: {},
+                    serverId: "",
+                },
+                status: RunStatus.Idle,
+                inputs: (wfNode.data.inputs ?? {}) as Record<string, string>,
+                outputs: (wfNode.data.outputs ?? {}) as Record<string, string>,
+            };
+            addNodeState(state);
+        });
+
+        // 消费后清除，避免重复同步
+        setCurrentWorkflow(null);
+    }, [currentWorkflow]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // ============================================================
     // 连线处理
