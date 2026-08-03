@@ -37,12 +37,12 @@ aes-gcm = "0.10"
 base64 = "0.22"
 rand = "0.8"
 reqwest = { version = "0.12", features = ["stream", "json"] }
-prometheus = { version = "0.13", features = ["process"] }
+prometheus = { version = "0.14", features = ["process"] }
 lazy_static = "1.4"
-opentelemetry = { version = "0.24", features = ["trace"] }
+opentelemetry = { version = "0.32", features = ["trace"] }
 opentelemetry_sdk = { version = "0.24", features = ["rt-tokio"] }
-opentelemetry-otlp = { version = "0.17", features = ["http-proto"] }
-tracing-opentelemetry = "0.25"
+opentelemetry-otlp = { version = "0.32", features = ["http-proto"] }
+tracing-opentelemetry = "0.33"
 
 [dev-dependencies]
 tempfile = "3"
